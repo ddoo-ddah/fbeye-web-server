@@ -28,8 +28,10 @@ router.post('/signin', async (req, res, next) => {
     const result = doc && (password.compare(doc.password.buffer) === 0);
     if (result) {
       req.session.email = email;
+      res.redirect('/');
+    } else {
+      res.send('wrong email or password.');
     }
-    res.send(result);
   }
 });
 
@@ -37,7 +39,8 @@ router.get('/signout', (req, res, next) => {
   if (req.session.email) {
     req.session.destroy(err => {
       console.error(err);
-    })
+    });
+    res.redirect('/users/signin');
   } else {
     res.send('signed out.');
   }
@@ -61,8 +64,8 @@ router.post('/signup', async (req, res, next) => {
       password
     });
     await client.close();
-    res.send('signed up.');
+    res.redirect('/users/signin');
   }
-})
+});
 
 module.exports = router;
