@@ -58,13 +58,17 @@ router.post('/signup', async (req, res, next) => {
   const email = req.body["email"];
   const password = await crypto.scrypt(req.body["password"], 'my salt', 32);
   if (email && password) {
-    const client = await db.getClient();
-    const result = await client.db().collection('admin').insertOne({
-      email,
-      password
-    });
-    await client.close();
-    res.redirect('/users/signin');
+    if (req.body["password"] === req.body["password-confirm"]) {
+      const client = await db.getClient();
+      const result = await client.db().collection('admin').insertOne({
+        email,
+        password
+      });
+      await client.close();
+      res.redirect('/users/signin');
+    } else {
+      res.send('passwords do not match.');
+    }
   }
 });
 
