@@ -33,4 +33,14 @@ router.post('/signin', async (req, res, next) => {
   }
 });
 
+router.get('/signout', (req, res, next) => {
+  if (req.session.email) {
+    req.session.destroy(err => {
+      console.error(err);
+    })
+  } else {
+    res.send('signed out.');
+  }
+});
+
 module.exports = router;
