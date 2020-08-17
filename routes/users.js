@@ -21,11 +21,11 @@ router.post('/signin', async (req, res, next) => {
   const password = await crypto.scrypt(req.body["password"], 'my salt', 32);
   if (email && password) {
     const client = await db.getClient();
-    const doc = client.db().collection('admin').findOne({
+    const doc = await client.db().collection('admin').findOne({
       email
     });
     await client.close();
-    const result = doc && (doc.password === password);
+    const result = doc && (password.compare(doc.password.buffer) === 0);
     if (result) {
       req.session.email = email;
     }
@@ -42,5 +42,27 @@ router.get('/signout', (req, res, next) => {
     res.send('signed out.');
   }
 });
+
+router.get('/signup', (req, res, next) => {
+  if (!req.session.email) {
+    res.render('users/signup');
+  } else {
+    res.send('signed in.');
+  }
+});
+
+router.post('/signup', async (req, res, next) => {
+  const email = req.body["email"];
+  const password = await crypto.scrypt(req.body["password"], 'my salt', 32);
+  if (email && password) {
+    const client = await db.getClient();
+    const result = await client.db().collection('admin').insertOne({
+      email,
+      password
+    });
+    await client.close();
+    res.send('signed up.');
+  }
+})
 
 module.exports = router;
