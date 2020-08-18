@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>시험 추가하기</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+<div class="container">
+    <form method="post">
+        <div class="form-group">
+            <label for="title">시험 이름</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="admin">시험 감독관</label>
+            <input type="email" class="form-control" id="admin" name="admin" value=<%= admin %> readonly>
+        </div>
+        <div class="form-group">
+            <label for="start-time">시험 시작</label>
+            <input type="datetime-local" class="form-control" id="start-time" name="start-time" required>
+        </div>
+        <div class="form-group">
+            <label for="end-time">시험 종료</label>
+            <input type="datetime-local" class="form-control" id="end-time" name="end-time" required>
+        </div>
+        <div class="form-group">
+            <label for="access-code">시험 코드</label>
+            <input type="text" class="form-control" id="access-code" name="access-code" value=<%= accessCode %> readonly>
+        </div>
+        <input type="reset" class="btn btn-danger" value="초기화">
+        <input type="submit" class="btn btn-primary" value="완료">
+    </form>
+</div>
+    </body>
+</html>
