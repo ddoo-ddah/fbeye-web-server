@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 router.get('/signin', (req, res, next) => {
   if (!req.session.email) {
     res.render('users/signin');
-  } else {
+  } else { // 이미 로그인되어 있으면
     res.send('signed in.');
   }
 });
@@ -19,17 +19,17 @@ router.get('/signin', (req, res, next) => {
 router.post('/signin', async (req, res, next) => {
   const email = req.body["email"];
   const password = await crypto.scrypt(req.body["password"], 'my salt', 32);
-  if (email && password) {
+  if (!req.session.email && email && password) {
     const client = await db.getClient();
     const doc = await client.db().collection('admin').findOne({
       email
     });
     await client.close();
-    const result = doc && (password.compare(doc.password.buffer) === 0);
-    if (result) {
+
+    if (doc && (password.compare(doc.password.buffer) === 0)) { // 로그인 성공
       req.session.email = email;
       res.redirect('/');
-    } else {
+    } else { // 로그인 실패
       res.send('wrong email or password.');
     }
   }
@@ -57,7 +57,7 @@ router.get('/signup', (req, res, next) => {
 router.post('/signup', async (req, res, next) => {
   const email = req.body["email"];
   const password = await crypto.scrypt(req.body["password"], 'my salt', 32);
-  if (email && password) {
+  if (!req.session.email && email && password) {
     if (req.body["password"] === req.body["password-confirm"]) {
       const client = await db.getClient();
       const result = await client.db().collection('admin').insertOne({

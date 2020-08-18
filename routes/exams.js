@@ -6,14 +6,14 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     if (req.session.email) {
         const client = await db.getClient();
-        const doc = await client.db().collection('admin').findOne({
+        const doc = await client.db().collection('admin').findOne({ // 관리자 계정 정보 가져오기
             email: req.session.email
         });
         const collection = client.db().collection('exams');
         const exams = [];
         if (doc.exams) {
             doc.exams.forEach(async e => {
-                exams.push(await collection.findOne({
+                exams.push(await collection.findOne({ // 연결된 시험 정보 가져오기
                     _id: e
                 }));
             });
@@ -59,16 +59,16 @@ router.post('/new', async (req, res, next) => {
     const startTime = req.body["start-time"];
     const endTime = req.body["end-time"];
     const accessCode = req.body["access-code"];
-    if (title && startTime && endTime) {
+    if (req.session.email && title && startTime && endTime && accessCode) {
         const client = await db.getClient();
-        const result1 = await client.db().collection('exams').insertOne({
+        const result1 = await client.db().collection('exams').insertOne({ // 시험 생성
             accessCode,
             status: 0,
             title,
             startTime,
             endTime
         });
-        const result2 = await client.db().collection('admin').updateOne({
+        const result2 = await client.db().collection('admin').updateOne({ // 관리자 계정에 연결
             email: req.session.email
         }, {
             $addToSet: {
