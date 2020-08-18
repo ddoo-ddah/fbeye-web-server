@@ -17,10 +17,14 @@
         <tbody>
             <% if (exams.length > 0) { %>
                 <% exams.forEach(e => { %>
-                    <tr>
-                        <td><%= e.title %></td>
-                    </tr>
+                    <% if (e) { %>
+                        <tr>
+                            <td><%= e.title %></td>
+                        </tr>
+                    <% } %>
                 <% }); %>
+            <% } else { %>
+                <p>시험이 없습니다.</p>
             <% } %>
         </tbody>
     </table>

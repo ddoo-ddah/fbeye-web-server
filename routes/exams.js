@@ -55,7 +55,7 @@ router.post('/new', async (req, res, next) => {
             email: req.session.email
         }, {
             $addToSet: {
-                exams: result1.insertedId_id
+                exams: result1.insertedId
             }
         })
         await client.close();
