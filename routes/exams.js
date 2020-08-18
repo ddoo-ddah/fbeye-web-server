@@ -72,10 +72,10 @@ router.post('/new', async (req, res, next) => {
             $addToSet: {
                 exams: result1.insertedId
             }
-        })
+        });
         await client.close();
         res.redirect('/exams');
     }
-})
+});
 
 module.exports = router;

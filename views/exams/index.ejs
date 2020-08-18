@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf=8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>시험 목록</title>
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-</head>
-
-<body>
-    <div class="container">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">시험 제목</th>
-                    <th scope="col">코드</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (exams.length > 0) { %>
+    <head>
+        <meta charset="utf=8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>시험 목록</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+<div class="container">
+    <p><a href="/exams/new" class="btn btn-success">새 시험 만들기</a></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">시험 제목</th>
+                <th scope="col">코드</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (exams.length > 0) { %>
                 <% exams.forEach(e => { %>
-                <% if (e) { %>
-                <tr>
-                    <td><a href="/exams/exam/<%= e.accessCode %>"><%= e.title %></a></td>
-                    <td><%= e.accessCode %></td>
-                </tr>
-                <% } %>
+                    <% if (e) { %>
+                        <tr>
+                            <td><a href="/exams/exam/<%= e.accessCode %>"><%= e.title %></a></td>
+                            <td><%= e.accessCode %></td>
+                        </tr>
+                    <% } %>
                 <% }); %>
-                <% } else { %>
+            <% } else { %>
                 <p>시험이 없습니다.</p>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</body>
-
+            <% } %>
+        </tbody>
+    </table>
+    <a href="/">메인으로</a>
+</div>
+    </body>
 </html>
