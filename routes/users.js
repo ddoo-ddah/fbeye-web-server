@@ -60,12 +60,17 @@ router.post('/signup', async (req, res, next) => {
   if (!req.session.email && email && password) {
     if (req.body["password"] === req.body["password-confirm"]) {
       const client = await db.getClient();
-      const result = await client.db().collection('admin').insertOne({
-        email,
-        password
-      });
-      await client.close();
-      res.redirect('/users/signin');
+      if (!await client.db().collection('admin').findOne({email: email})) {
+        const result = await client.db().collection('admin').insertOne({
+          email,
+          password
+        });
+        await client.close();
+        res.redirect('/users/signin');
+      } else { // 이미 등록된 이메일이면
+        res.send('this account is already registered.');
+        await client.close();
+      }
     } else {
       res.send('passwords do not match.');
     }
