@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf=8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>시험 목록</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">시험 제목</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (exams.length > 0) { %>
+                <% exams.forEach(e => { %>
+                    <tr>
+                        <td><%= e.title %></td>
+                    </tr>
+                <% }); %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+    </body>
+</html>

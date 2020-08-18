@@ -3,9 +3,23 @@ const db = require('../lib/db');
 const crypto = require('../lib/crypto');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
     if (req.session.email) {
-        res.send('exams');
+        const client = await db.getClient();
+        const doc = await client.db().collection('admin').findOne({
+            email: req.session.email
+        });
+        const collection = client.db().collection('exams');
+        const exams = [];
+        doc.exams.forEach(async e => {
+            exams.push(await collection.findOne({
+                _id: e
+            }));
+        });
+        await client.close();
+        res.render('exams/index', {
+            exams
+        });
     } else {
         res.redirect('/');
     }
@@ -40,7 +54,7 @@ router.post('/new', async (req, res, next) => {
         const result2 = await client.db().collection('admin').updateOne({
             email: req.session.email
         }, {
-            $push: {
+            $addToSet: {
                 exams: result1.insertedId_id
             }
         })
