@@ -11,11 +11,13 @@ router.get('/', async (req, res, next) => {
         });
         const collection = client.db().collection('exams');
         const exams = [];
-        doc.exams.forEach(async e => {
-            exams.push(await collection.findOne({
-                _id: e
-            }));
-        });
+        if (doc.exams) {
+            doc.exams.forEach(async e => {
+                exams.push(await collection.findOne({
+                    _id: e
+                }));
+            });
+        }
         await client.close();
         res.render('exams/index', {
             exams
