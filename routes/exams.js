@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('../lib/db');
 const crypto = require('../lib/crypto');
 const router = express.Router();
 
@@ -21,5 +22,31 @@ router.get('/new', async (req, res, next) => {
         res.redirect('/');
     }
 });
+
+router.post('/new', async (req, res, next) => {
+    const title = req.body["title"];
+    const startTime = req.body["start-time"];
+    const endTime = req.body["end-time"];
+    const accessCode = req.body["access-code"];
+    if (title && startTime && endTime) {
+        const client = await db.getClient();
+        const result1 = await client.db().collection('exams').insertOne({
+            accessCode,
+            status: 0,
+            title,
+            startTime,
+            endTime
+        });
+        const result2 = await client.db().collection('admin').updateOne({
+            email: req.session.email
+        }, {
+            $push: {
+                exams: result1.insertedId_id
+            }
+        })
+        await client.close();
+        res.redirect('/exams');
+    }
+})
 
 module.exports = router;
