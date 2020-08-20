@@ -8,6 +8,11 @@
     </head>
     <body>
 <div class="container">
+    <% if (flash.danger) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= flash.danger %>
+        </div>
+    <% } %>
     <div class="row">
         <div class="col-md"></div>
         <div class="col-md">

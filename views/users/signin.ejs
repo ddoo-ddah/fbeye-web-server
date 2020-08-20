@@ -11,15 +11,28 @@ body {
     display: flex;
     -ms-flex-align: center;
     align-items: center;
-    padding-top: 40px;
     padding-bottom: 40px;
     background-color: #f5f5f5;
+}
+
+#title {
+    padding-top: 40px;
 }
         </style>
     </head>
     <body>
 <div class="container">
-    <h1 class="text-center">FBEye</h1>
+    <% if (flash.success) { %>
+        <div class="alert alert-success" role="alert">
+            <%= flash.success %>
+        </div>
+    <% } %>
+    <% if (flash.danger) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= flash.danger %>
+        </div>
+    <% } %>
+    <h1 id="title" class="text-center">FBEye</h1>
     <div class="row">
         <div class="col-md"></div>
         <div class="col-md">
