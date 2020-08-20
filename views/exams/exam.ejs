@@ -12,7 +12,8 @@
     <p>시험 시작: <%= exam.startTime %></p>
     <p>시험 종료: <%= exam.endTime %></p>
     <p>시험 코드: <%= exam.accessCode %></p>
-    <p><a href="/exams">목록으로</a></p>
+    <p><a href="/exams/users/<%= exam.accessCode %>" class="btn btn-primary">응시자 관리</a></p>
+    <p><a href="/exams" class="btn btn-light">목록으로</a></p>
 </div>
     </body>
 </html>

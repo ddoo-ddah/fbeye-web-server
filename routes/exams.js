@@ -80,4 +80,57 @@ router.post('/new', async (req, res, next) => {
     }
 });
 
+router.get('/users/:id', async (req, res, next) => {
+    const id = req.params.id;
+    if (req.session.email) {
+        const client = await db.getClient();
+        const doc = await client.db().collection('exams').findOne({
+            accessCode: id
+        });
+        await client.close();
+        res.render('exams/users/index', {
+            id,
+            users: doc.users ? doc.users : []
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+router.get('/users/new/:id', async (req, res, next) => {
+    const id = req.params.id;
+    if (req.session.email) {
+        const accessCode = (await crypto.randomBytes(6)).toString('base64');
+        res.render('exams/users/new', {
+            id,
+            accessCode
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+router.post('/users/new/:id', async (req, res, next) => {
+    const id = req.params.id;
+    const email = req.body['email'];
+    const name = req.body['name'];
+    const accessCode = req.body['access-code'];
+    if (req.session.email && id && email && name && accessCode) {
+        const client = await db.getClient();
+        const result = await client.db().collection('exams').updateOne({
+            accessCode: id
+        }, {
+            $addToSet: {
+                users: {
+                    _id: new db.objectId(),
+                    email,
+                    name,
+                    accessCode
+                }
+            }
+        });
+        res.redirect(`/exams/users/${id}`);
+    }
+});
+
 module.exports = router;

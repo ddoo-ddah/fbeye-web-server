@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>응시자 목록</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+<div class="container">
+    <p><a href="/exams/users/new/<%= id %>" class="btn btn-primary">응시자 추가</a></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">응시자 Email</th>
+                <th scope="col">응시자 이름</th>
+                <th scope="col">코드</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (users.length > 0) { %>
+                <% users.forEach(e => { %>
+                    <% if (e) { %>
+                        <tr>
+                            <td><%= e.email %></td>
+                            <td><%= e.name %></td>
+                            <td><%= e.accessCode %></td>
+                        </tr>
+                    <% } %>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td>응시자가 없습니다.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+    </body>
+</html>
