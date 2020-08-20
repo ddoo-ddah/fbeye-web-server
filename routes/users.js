@@ -51,7 +51,10 @@ router.get('/signout', (req, res, next) => {
 
 router.get('/signup', (req, res, next) => {
   if (!req.session.email) {
-    res.render('users/signup');
+    const flash = req.flash();
+    res.render('users/signup', {
+      flash
+    });
   } else {
     res.send('signed in.');
   }
@@ -68,9 +71,11 @@ router.post('/signup', async (req, res, next) => {
         password
       });
       await client.close();
+      req.flash('success', '회원가입이 완료되었습니다. 로그인 하세요.');
       res.redirect('/users/signin');
     } else {
-      res.send('passwords do not match.');
+      req.flash('danger', '패스워드가 일치하지 않습니다.');
+      res.redirect('/users/signup');
     }
   }
 });

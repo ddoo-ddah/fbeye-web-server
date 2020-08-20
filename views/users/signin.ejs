@@ -22,6 +22,11 @@ body {
     </head>
     <body>
 <div class="container">
+    <% if (flash.success) { %>
+        <div class="alert alert-success" role="alert">
+            <%= flash.success %>
+        </div>
+    <% } %>
     <% if (flash.danger) { %>
         <div class="alert alert-danger" role="alert">
             <%= flash.danger %>
