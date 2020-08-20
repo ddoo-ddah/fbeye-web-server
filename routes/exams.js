@@ -80,6 +80,61 @@ router.post('/new', async (req, res, next) => {
     }
 });
 
+router.get('/questions/:id', async (req, res, next) => { // 문제 목록
+    const id = req.params.id;
+    if (req.session.email) {
+        const client = await db.getClient();
+        const doc = await client.db().collection('exams').findOne({
+            accessCode: id
+        });
+        await client.close();
+        res.render('exams/questions/index', {
+            id,
+            questions: doc.questions ? doc.questions : []
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+router.get('/questions/new/:id', (req, res, next) => {
+    const id = req.params.id;
+    if (req.session.email) {
+        res.render('exams/questions/new', {
+            id
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
+    const id = req.params.id;
+    const type = req.body['type'];
+    const question = req.body['question'];
+    const score = req.body['score'];
+    const answer = req.body['answer'];
+    if (req.session.email && id) {
+        const client = await db.getClient();
+        const result = await client.db().collection('exams').updateOne({
+            accessCode: id
+        }, {
+            $addToSet: {
+                questions: {
+                    _id: new db.objectId(),
+                    type,
+                    question,
+                    score,
+                    answers: [
+                        answer
+                    ]
+                }
+            }
+        });
+        res.redirect(`/exams/questions/${id}`);
+    }
+});
+
 router.get('/users/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
