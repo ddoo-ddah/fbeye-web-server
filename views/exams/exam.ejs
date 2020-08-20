@@ -8,13 +8,43 @@
     </head>
     <body>
 <div class="container">
-    <h3><%= exam.title %></h3>
-    <p>시험 시작: <%= exam.startTime %></p>
-    <p>시험 종료: <%= exam.endTime %></p>
-    <p>시험 코드: <%= exam.accessCode %></p>
-    <p><a href="/exams/questions/<%= exam.accessCode %>" class="btn btn-primary">문제 관리</a>
-        <a href="/exams/users/<%= exam.accessCode %>" class="btn btn-primary">응시자 관리</a></p>
-    <p><a href="/exams" class="btn btn-light">목록으로</a></p>
+    <h3>시험 개요</h3>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><%= exam.title %></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%= exam.status %></h6>
+            <p class="card-text">시험 시작: <%= exam.startTime %></p>
+            <p class="card-text"></p>시험 종료: <%= exam.endTime %></p>
+            <p class="card-text">시험 코드: <%= exam.accessCode %></p>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-body">
+                <div class="row">
+                    <div class="col-md-11">
+                        <h5 class="card-title">문제</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= exam.questions.length %></h6>
+                    </div>
+                    <div class="col-md text-right">
+                        <a href="/exams/questions/<%= exam.accessCode %>" class="btn btn-secondary">관리</a>
+                    </div>
+                </div>
+        </div>
+    </div><br>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <h5 class="card-title">응시자</h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><%= exam.users.length %></h6>
+                </div>
+                <div class="col-md text-right">
+                    <a href="/exams/users/<%= exam.accessCode %>" class="btn btn-secondary">관리</a>
+                </div>
+            </div>
+        </div>
+    </div><br>
+    <p class="text-right"><a href="/exams" class="btn btn-primary">확인</a></p>
 </div>
     </body>
 </html>

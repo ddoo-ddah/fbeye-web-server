@@ -34,6 +34,12 @@ router.get('/exam/:id', async (req, res, next) => {
         const doc = await client.db().collection('exams').findOne({
             accessCode: id
         });
+        if (!doc.questions) {
+            doc.questions = [];
+        }
+        if (!doc.users) {
+            doc.users = [];
+        }
         res.render('exams/exam', {
             exam: doc
         });
