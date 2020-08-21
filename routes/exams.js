@@ -31,15 +31,26 @@ router.get('/exam/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
         const client = await db.getClient();
-        const doc = await client.db().collection('exams').findOne({
+        const doc = await client.db().collection('exams').findOne({ // 시험 정보
             accessCode: id
         });
         if (!doc.questions) {
             doc.questions = [];
         }
-        if (!doc.users) {
-            doc.users = [];
-        }
+
+        const users = await client.db().collection('users').find({ // 응시자 정보
+            _id: {
+                $in: doc.users
+            }
+        }, {
+            _id: false,
+            email: true,
+            name: true,
+            accessCode: true
+        }).toArray();
+        await client.close();
+        doc.users = users ? users : [];
+
         res.render('exams/exam', {
             exam: doc
         });
