@@ -197,18 +197,19 @@ router.post('/users/new/:id', async (req, res, next) => {
     const accessCode = req.body['access-code'];
     if (req.session.email && id && email && name && accessCode) {
         const client = await db.getClient();
-        const result = await client.db().collection('exams').updateOne({
+        const result = await client.db().collection('users').insertOne({
+            email,
+            name,
+            accessCode
+        });
+        await client.db().collection('exams').updateOne({
             accessCode: id
         }, {
             $addToSet: {
-                users: {
-                    _id: new db.objectId(),
-                    email,
-                    name,
-                    accessCode
-                }
+                users: result.insertedId
             }
         });
+        await client.close();
         res.redirect(`/exams/users/${id}`);
     }
 });
