@@ -31,15 +31,26 @@ router.get('/exam/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
         const client = await db.getClient();
-        const doc = await client.db().collection('exams').findOne({
+        const doc = await client.db().collection('exams').findOne({ // 시험 정보
             accessCode: id
         });
         if (!doc.questions) {
             doc.questions = [];
         }
-        if (!doc.users) {
-            doc.users = [];
-        }
+
+        const users = await client.db().collection('users').find({ // 응시자 정보
+            _id: {
+                $in: doc.users
+            }
+        }, {
+            _id: false,
+            email: true,
+            name: true,
+            accessCode: true
+        }).toArray();
+        await client.close();
+        doc.users = users ? users : [];
+
         res.render('exams/exam', {
             exam: doc
         });
@@ -147,11 +158,19 @@ router.get('/users/:id', async (req, res, next) => {
         const client = await db.getClient();
         const doc = await client.db().collection('exams').findOne({
             accessCode: id
+        }, {
+            _id: false,
+            users: true
         });
+        const users = await client.db().collection('users').find({
+            _id: {
+                $in: doc.users
+            }
+        }).toArray();
         await client.close();
         res.render('exams/users/index', {
             id,
-            users: doc.users ? doc.users : []
+            users: users ? users : []
         });
     } else {
         res.redirect('/');
@@ -178,18 +197,19 @@ router.post('/users/new/:id', async (req, res, next) => {
     const accessCode = req.body['access-code'];
     if (req.session.email && id && email && name && accessCode) {
         const client = await db.getClient();
-        const result = await client.db().collection('exams').updateOne({
+        const result = await client.db().collection('users').insertOne({
+            email,
+            name,
+            accessCode
+        });
+        await client.db().collection('exams').updateOne({
             accessCode: id
         }, {
             $addToSet: {
-                users: {
-                    _id: new db.objectId(),
-                    email,
-                    name,
-                    accessCode
-                }
+                users: result.insertedId
             }
         });
+        await client.close();
         res.redirect(`/exams/users/${id}`);
     }
 });
