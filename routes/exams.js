@@ -38,18 +38,19 @@ router.get('/exam/:id', async (req, res, next) => {
             doc.questions = [];
         }
 
-        const users = await client.db().collection('users').find({ // 응시자 정보
-            _id: {
-                $in: doc.users
-            }
-        }, {
-            _id: false,
-            email: true,
-            name: true,
-            accessCode: true
-        }).toArray();
+        doc.users = doc.users ? ( // 응시자 정보
+            await client.db().collection('users').find({
+                _id: {
+                    $in: doc.users
+                }
+            }, {
+                _id: false,
+                email: true,
+                name: true,
+                accessCode: true
+            }).toArray()
+        ) : [];
         await client.close();
-        doc.users = users ? users : [];
 
         res.render('exams/exam', {
             exam: doc
@@ -162,15 +163,19 @@ router.get('/users/:id', async (req, res, next) => {
             _id: false,
             users: true
         });
-        const users = await client.db().collection('users').find({
-            _id: {
-                $in: doc.users
-            }
-        }).toArray();
+
+        const users = doc.users ? (
+            await client.db().collection('users').find({
+                _id: {
+                    $in: doc.users
+                }
+            }).toArray()
+        ) : [];
         await client.close();
+
         res.render('exams/users/index', {
             id,
-            users: users ? users : []
+            users
         });
     } else {
         res.redirect('/');
