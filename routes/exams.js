@@ -166,7 +166,7 @@ router.get('/users/:id', async (req, res, next) => {
             _id: {
                 $in: doc.users
             }
-        });
+        }).toArray();
         await client.close();
         res.render('exams/users/index', {
             id,
