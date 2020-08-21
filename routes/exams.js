@@ -158,11 +158,19 @@ router.get('/users/:id', async (req, res, next) => {
         const client = await db.getClient();
         const doc = await client.db().collection('exams').findOne({
             accessCode: id
+        }, {
+            _id: false,
+            users: true
+        });
+        const users = await client.db().collection('users').find({
+            _id: {
+                $in: doc.users
+            }
         });
         await client.close();
         res.render('exams/users/index', {
             id,
-            users: doc.users ? doc.users : []
+            users: users ? users : []
         });
     } else {
         res.redirect('/');
