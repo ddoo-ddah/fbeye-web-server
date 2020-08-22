@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>회원탈퇴 - FBEye</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+<div class="container">
+    <% if (flash.danger) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= flash.danger %>
+        </div>
+    <% } %>
+    <div class="row">
+        <div class="col-md"></div>
+        <div class="col-md">
+            <form method="post">
+                <div class="form-group">
+                    <label for="password">패스워드</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <br><input type="submit" class="btn btn-danger" value="회원탈퇴" style="width: 100%;">
+            </form><br>
+            <p><a href="/">취소</a></p>
+        </div>
+        <div class="col-md"></div>
+    </div>
+</div>
+    </body>
+</html>

@@ -85,4 +85,40 @@ router.post('/signup', async (req, res, next) => {
   }
 });
 
+router.get('/escape', (req, res, next) => {
+  if (req.session.email) {
+    const flash = req.flash();
+    res.render('users/escape', {
+      flash
+    });
+  } else {
+    res.redirect('/');
+  }
+});
+
+router.post('/escape', async (req, res, next) => {
+  const password = await crypto.scrypt(req.body['password'], 'my salt', 32);
+  if (req.session.email && password) {
+    const client = await db.getClient();
+    const doc = await client.db().collection('admin').findOne({
+      email: req.session.email
+    }, {
+      _id: false,
+      password: true
+    });
+    if (password.compare(doc.password.buffer) === 0) {
+      const result = await client.db().collection('admin').deleteOne({
+        email: req.session.email
+      });
+      if (result.deletedCount === 1) {
+        res.redirect('/users/signout'); // 로그아웃
+      }
+    } else {
+      req.flash('danger', '패스워드가 맞지 않습니다.');
+      res.redirect('/users/escape');
+    }
+    await client.close();
+  }
+});
+
 module.exports = router;
