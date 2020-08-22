@@ -3,30 +3,35 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Sign up</title>
+        <title>회원가입 - FBEye</title>
         <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     </head>
     <body>
 <div class="container">
+    <% if (flash.danger) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= flash.danger %>
+        </div>
+    <% } %>
     <div class="row">
         <div class="col-md"></div>
         <div class="col-md">
             <form method="post">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">이메일</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">패스워드</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <div class="form-group">
-                    <label for="password-confirm">Password Confirm</label>
+                    <label for="password-confirm">패스워드 확인</label>
                     <input type="password" class="form-control" id="password-confirm" name="password-confirm" required>
                 </div>
-                <br><input type="submit" class="btn btn-primary" value="Sign up" style="width: 100%;">
-            </form>
-            <p><a href="signin">Sign in</a></p>
+                <br><input type="submit" class="btn btn-primary" value="회원가입" style="width: 100%;">
+            </form><br>
+            <p><a href="signin">로그인</a></p>
         </div>
         <div class="col-md"></div>
     </div>

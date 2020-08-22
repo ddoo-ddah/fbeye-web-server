@@ -10,7 +10,10 @@ router.get('/', (req, res, next) => {
 
 router.get('/signin', (req, res, next) => {
   if (!req.session.email) {
-    res.render('users/signin');
+    const flash = req.flash();
+    res.render('users/signin', {
+      flash
+    });
   } else { // 이미 로그인되어 있으면
     res.send('signed in.');
   }
@@ -28,10 +31,10 @@ router.post('/signin', async (req, res, next) => {
 
     if (doc && (password.compare(doc.password.buffer) === 0)) { // 로그인 성공
       req.session.email = email;
-      res.redirect('/');
     } else { // 로그인 실패
-      res.send('wrong email or password.');
+      req.flash('danger', '이메일 또는 패스워드가 맞지 않습니다.');
     }
+    res.redirect('/');
   }
 });
 
@@ -48,7 +51,10 @@ router.get('/signout', (req, res, next) => {
 
 router.get('/signup', (req, res, next) => {
   if (!req.session.email) {
-    res.render('users/signup');
+    const flash = req.flash();
+    res.render('users/signup', {
+      flash
+    });
   } else {
     res.send('signed in.');
   }
@@ -66,13 +72,15 @@ router.post('/signup', async (req, res, next) => {
           password
         });
         await client.close();
+        req.flash('success', '회원가입이 완료되었습니다. 로그인 하세요.');
         res.redirect('/users/signin');
-      } else { // 이미 등록된 이메일이면
-        res.send('this account is already registered.');
+      } else {
+        res.send('이미 등록된 계정입니다.');
         await client.close();
       }
     } else {
-      res.send('passwords do not match.');
+      req.flash('danger', '패스워드가 일치하지 않습니다.');
+      res.redirect('/users/signup');
     }
   }
 });

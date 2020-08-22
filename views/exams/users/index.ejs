@@ -3,38 +3,40 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>시험 관리 - FBEye</title>
+        <title>응시자 관리 - FBEye</title>
         <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     </head>
     <body>
 <div class="container">
-    <h3>시험 관리</h3>
-    <p class="text-right"><a href="/exams/new" class="btn btn-primary">+ 시험 추가</a></p>
+    <h3>응시자 관리</h3>
+    <p class="text-right"><a href="/exams/users/new/<%= id %>" class="btn btn-primary">+ 응시자 추가</a></p>
     <table class="table table-hover">
         <thead class="thead-light">
             <tr>
-                <th scope="col">시험 제목</th>
+                <th scope="col">응시자 이메일</th>
+                <th scope="col">응시자 이름</th>
                 <th scope="col">코드</th>
             </tr>
         </thead>
         <tbody>
-            <% if (exams.length > 0) { %>
-                <% exams.forEach(e => { %>
+            <% if (users.length > 0) { %>
+                <% users.forEach(e => { %>
                     <% if (e) { %>
                         <tr>
-                            <td><a href="/exams/exam/<%= e.accessCode %>"><%= e.title %></a></td>
+                            <td><%= e.email %></td>
+                            <td><%= e.name %></td>
                             <td><%= e.accessCode %></td>
                         </tr>
                     <% } %>
                 <% }); %>
             <% } else { %>
                 <tr>
-                    <td>시험이 없습니다.</td>
+                    <td>응시자가 없습니다.</td>
                 </tr>
             <% } %>
         </tbody>
     </table>
-    <p class="text-right"><a href="/" class="btn btn-light">확인</a></p>
+    <p class="text-right"><a href="/exams/exam/<%= id %>" class="btn btn-light">확인</a></p>
 </div>
     </body>
 </html>
