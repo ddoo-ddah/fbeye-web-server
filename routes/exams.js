@@ -60,6 +60,18 @@ router.get('/exam/:id', async (req, res, next) => {
     }
 });
 
+router.post('/exam/:id', async (req, res, next) => {
+    const id = req.params.id;
+    if (req.session.email) {
+        const client = await db.getClient();
+        client.db().collection('exams').deleteOne({
+            accessCode: id
+        });
+    }
+
+    res.redirect('/');
+});
+
 router.get('/new', async (req, res, next) => {
     if (req.session.email) {
         const accessCode = (await crypto.randomBytes(6)).toString('base64');
