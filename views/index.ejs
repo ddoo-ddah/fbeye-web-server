@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
   </head>
   <body>
-<div class="container-fluid">
-  <p><strong><%= email %></strong>님 환영합니다. <a href="/users/signout">Sign out</a></p>
-  <p><a href="/exams">시험 목록</a></p>
+<div class="container">
+  <p><strong><%= email %></strong>님 환영합니다. <a href="/users/signout" class="btn btn-outline-dark">로그아웃</a> <a href="/users/escape" class="btn btn-outline-danger">회원탈퇴</a></p>
+  <p><a href="/exams" class="btn btn-outline-primary">시험 목록</a></p>
 </div>
   </body>
 </html>
