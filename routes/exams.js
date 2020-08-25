@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../lib/db');
 const crypto = require('../lib/crypto');
+const { ObjectId } = require('mongodb');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -60,16 +61,26 @@ router.get('/exam/:id', async (req, res, next) => {
     }
 });
 
-router.post('/exam/:id', async (req, res, next) => {
+router.post('/exam/:id', async (req, res, next) => { // 시험 삭제
     const id = req.params.id;
     if (req.session.email) {
         const client = await db.getClient();
-        client.db().collection('exams').deleteOne({
+        const examObjectId = await client.db().collection('exams').findOne({
             accessCode: id
         });
+        await client.db().collection('exams').deleteOne({
+            _id: examObjectId._id
+        });
+        await client.db().collection('admin').updateOne(
+            {
+                email: req.session.email
+            },
+            {
+                $pull: { exams: examObjectId._id }
+            });
     }
 
-    res.redirect('/');
+    res.redirect('/exams');
 });
 
 router.get('/new', async (req, res, next) => {
@@ -152,6 +163,48 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
             $addToSet: {
                 questions: {
                     _id: new db.objectId(),
+                    type,
+                    question,
+                    score,
+                    answers: [
+                        answer
+                    ]
+                }
+            }
+        });
+        res.redirect(`/exams/questions/${id}`);
+    }
+});
+
+router.get('/questions/edit/:id/:num', (req, res, next) => {
+    const id = req.params.id;
+    const num = req.params.num;
+    if (req.session.email) {
+        res.render('exams/questions/edit', {
+            id,
+            num
+        });
+    } else {
+        res.redirect('/');
+    }
+});
+
+router.post('/questions/edit/:id/:num', async (req, res, next) => { // 문제 편집 - 석진이한테 헬프콜 치러 가야됨
+    const id = req.params.id;
+    const type = req.body['type'];
+    const question = req.body['question'];
+    const score = req.body['score'];
+    const answer = req.body['answer'];
+    if (req.session.email && id) {
+        const client = await db.getClient();
+        const result = await client.db().collection('exams').updateOne({
+            accessCode: id
+            // questions: {
+            //     _id: 
+            // }
+        }, {
+            $set: {
+                questions: {
                     type,
                     question,
                     score,
