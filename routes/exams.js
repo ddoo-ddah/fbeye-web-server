@@ -176,7 +176,7 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     }
 });
 
-router.get('/questions/edit/:id/:num', (req, res, next) => {
+router.get('/questions/:id/edit/:num', (req, res, next) => {
     const id = req.params.id;
     const num = req.params.num;
     if (req.session.email) {
@@ -189,31 +189,35 @@ router.get('/questions/edit/:id/:num', (req, res, next) => {
     }
 });
 
-router.post('/questions/edit/:id/:num', async (req, res, next) => { // 문제 편집 - 석진이한테 헬프콜 치러 가야됨
+router.post('/questions/:id/edit/:num', async (req, res, next) => { // 문제 편집
     const id = req.params.id;
+    const num = req.params.num;
     const type = req.body['type'];
     const question = req.body['question'];
     const score = req.body['score'];
     const answer = req.body['answer'];
     if (req.session.email && id) {
+
         const client = await db.getClient();
-        const result = await client.db().collection('exams').updateOne({
-            accessCode: id
-            // questions: {
-            //     _id: 
-            // }
-        }, {
-            $set: {
-                questions: {
-                    type,
-                    question,
-                    score,
-                    answers: [
-                        answer
-                    ]
-                }
-            }
-        });
+
+        const updatedQuestion = { };
+        updatedQuestion[`questions.${num - 1}`] = {
+            type: type,
+            question: question,
+            score: score,
+            answers: [
+                answer
+            ]
+        };
+
+        const result = await client.db().collection('exams').updateOne(
+            {
+                accessCode: id
+            },
+            {
+                $set: updatedQuestion
+            });
+
         res.redirect(`/exams/questions/${id}`);
     }
 });
