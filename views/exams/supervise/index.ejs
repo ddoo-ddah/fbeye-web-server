@@ -18,8 +18,8 @@
             <div class="card">
                 <div class="card-header">참여자 목록</div>
                 <ul class="list-group list-group-flush" name="examinees-list">
-                    <% for (let i = 0; i < exam.users.length; ++i) { %>
-                        <li class="list-group-item"><%= exam.users[i] %></li>
+                    <% for (let i = 0; i < users.length; ++i) { %>
+                        <li class="list-group-item"><%= users[i].name %></li>
                     <% } %>
                 </ul>
             </div>
@@ -39,8 +39,8 @@
             <div class="card">
                 <div class="card-header">채팅</div>
                 <div class="card-body">
-                    <div class="card" style="height: 660px;">
-                        <ul id="ul-chatlog"></ul>
+                    <div class="card" id="card-chatlog" style="height: 660px;">
+                        <!-- 채팅 로그 카드 -->
                     </div>
                     <form id="chat">
                         <div class="input-group">
