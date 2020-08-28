@@ -288,4 +288,26 @@ router.post('/users/new/:id', async (req, res, next) => {
     }
 });
 
+router.get('/supervise/:id', async (req, res, next) => {
+    const id = req.params.id;
+    if (req.session.email) {
+        const client = await db.getClient();
+        const exam = await client.db().collection('exams').findOne({
+            accessCode: id
+        });
+
+        let isExamTimeNow = true; // TODO: 시험 시간이 아니면 들어가지 못하게 하기
+        if (isExamTimeNow) {
+            res.render('exams/supervise/index', {
+                id,
+                exam
+            });
+        } else {
+            res.send('시험 시간이 아닙니다.');
+        }
+    } else {
+        res.redirect('/');
+    }
+});
+
 module.exports = router;

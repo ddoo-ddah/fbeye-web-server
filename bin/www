@@ -22,6 +22,11 @@ app.set('port', port);
 const server = http.createServer(app);
 
 /**
+ * socket.io
+ */
+const socketio = require('../lib/socketio')(server);
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 

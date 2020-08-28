@@ -15,15 +15,17 @@
             <tr>
                 <th scope="col">시험 제목</th>
                 <th scope="col">코드</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             <% if (exams.length > 0) { %>
                 <% exams.forEach(e => { %>
                     <% if (e) { %>
-                        <tr>
-                            <td><a href="/exams/exam/<%= e.accessCode %>"><%= e.title %></a></td>
-                            <td><%= e.accessCode %></td>
+                        <tr class="justify-content-center">
+                            <td class="align-middle"><a href="/exams/exam/<%= e.accessCode %>"><%= e.title %></a></td>
+                            <td class="align-middle"><%= e.accessCode %></td>
+                            <td class="text-right"><a href="/exams/supervise/<%= e.accessCode %>" class="btn btn-outline-primary">시험 시작</a></td>
                         </tr>
                     <% } %>
                 <% }); %>

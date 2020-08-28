@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title><%= exam.title %> - FBEye</title>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+<div class="container clearfix">
+    <h3 class="float-left" style="display: inline;">시험 감독 - <%= exam.title %></h3>
+    <a href="/exams" class="btn btn-light float-right">뒤로</a>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- 참여자 목록 -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">참여자 목록</div>
+                <ul class="list-group list-group-flush" name="examinees-list">
+                    <% for (let i = 0; i < exam.users.length; ++i) { %>
+                        <li class="list-group-item"><%= exam.users[i] %></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+        <!-- 메인(참여자 영상/부정행위 로그) -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">참여자 영상</div>
+                <div class="card-body">
+                    <!-- TODO: 선택한 참여자 영상 보기 -->
+                    <img id="image-eye" alt="eye image">
+                </div>
+            </div>
+        </div>
+        <!-- 채팅 -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">채팅</div>
+                <div class="card-body">
+                    <div class="card" style="height: 660px;">
+                        <ul id="ul-chatlog"></ul>
+                    </div>
+                    <form id="chat">
+                        <div class="input-group">
+                            <input type="text" name="message" class="form-control" placeholder="메시지 입력" aria-label="메시지 입력" aria-describedby="button-submit">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit" id="button-submit">전송</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/supervise.js"></script>
+    </body>
+</html>
