@@ -85,7 +85,7 @@ router.post('/exam/:id', async (req, res, next) => { // 시험 삭제
 
 router.get('/new', async (req, res, next) => {
     if (req.session.email) {
-        const accessCode = (await crypto.randomBytes(6)).toString('base64');
+        const accessCode = (await crypto.randomBytes(6)).toString('hex');
         res.render('exams/new', {
             admin: req.session.email,
             accessCode
@@ -254,7 +254,7 @@ router.get('/users/:id', async (req, res, next) => {
 router.get('/users/new/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
-        const accessCode = (await crypto.randomBytes(6)).toString('base64');
+        const accessCode = (await crypto.randomBytes(6)).toString('hex');
         res.render('exams/users/new', {
             id,
             accessCode
