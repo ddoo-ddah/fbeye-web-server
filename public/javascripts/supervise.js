@@ -24,35 +24,34 @@ window.onload = event => {
 
     const socket = io();
 
-    // 채팅 - welcome, chat, disconnect
+    /* 채팅 - welcome, chat, disconnect */
     const chatform = document.querySelector('#chat');
-    const chatlog = document.querySelector('#ul-chatlog');
+    const chatlog = document.querySelector('#card-chatlog');
     const message = document.querySelector('input[name="message"]');
-    chatform.addEventListener('submit', (event) => {
 
+    chatform.addEventListener('submit', (event) => { // 메시지 전송
         event.preventDefault();
-
         if (message.value === '') {
             return;
         }
-
-        console.log(message.value);
-        socket.emit('chat', { message: message.value });
+        socket.emit('chat', message.value);
         message.value = '';
     });
     socket.on('welcome', (data) => {
-        socket.broadcast.emit('welcome', '누군가가 이 세계에 합류했습니다. 디아블로의 사도들이 더욱 강해질 것 입니다.');
+        socket.broadcast.emit('welcome', '');
     }).on('chat', (data) => {
-        chatlog.appendChild(document.createElement('li')).innerHTML = `${data.sender} : ${data.message}`;
+        const pItem = document.createElement('p');
+        pItem.style.cssText = 'margin: 2px 0px 2px';
+        chatlog.appendChild(pItem).innerHTML = `(${data.timestamp}) ${data.content}`;
     }).on('disconnect', (data) => {
-        // disconnect
+        
     });
 
-    // 눈 - EYE
+    /* 눈 - eye */
     socket.on('eye', (data) => {
-        blobData = base64toBlob(data, 'image/jpg')
-        const urlCreator = window.URL || window.webkitURL
-        const imageUrl = urlCreator.createObjectURL(blobData)
-        image.src = imageUrl
-    })
+        blobData = base64toBlob(data, 'image/jpg');
+        const urlCreator = window.URL || window.webkitURL;
+        const imageUrl = urlCreator.createObjectURL(blobData);
+        image.src = imageUrl;
+    });
 }
