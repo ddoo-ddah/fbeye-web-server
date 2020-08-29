@@ -295,9 +295,15 @@ router.get('/supervise/:id', async (req, res, next) => {
         const exam = await client.db().collection('exams').findOne({
             accessCode: id
         });
-        const users = await client.db().collection('users').find({
-            _id: { $in: exam.users }
-        }).toArray();
+        let users = null;
+        try {
+            users = await client.db().collection('users').find({
+                _id: { $in: exam.users }
+            }).toArray();
+        } catch (err) {
+            res.send('참여자가 있어야 합니다.');
+            return;
+        }
 
         let isExamTimeNow = true; // TODO: 시험 시간이 아니면 들어가지 못하게 하기
         if (isExamTimeNow) {
