@@ -6,19 +6,17 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     if (req.session.email) {
         const flash = req.flash();
-        const client = await db.getClient();
+        const client = await db.connect();
         const doc = await client.db().collection('admin').findOne({ // 관리자 계정 정보 가져오기
             email: req.session.email
         });
-        const collection = client.db().collection('exams');
-        const exams = [];
-        if (doc.exams) {
-            doc.exams.forEach(async e => {
-                exams.push(await collection.findOne({ // 연결된 시험 정보 가져오기
-                    _id: e
-                }));
-            });
-        }
+        const exams = doc.exams ? (
+            await client.db().collection('exams').find({ // 연결된 시험 정보 가져오기
+                _id: {
+                    $in: doc.exams
+                }
+            }).toArray()
+        ) : [];
         await client.close();
         res.render('exams/index', {
             exams,
@@ -32,7 +30,7 @@ router.get('/', async (req, res, next) => {
 router.get('/exam/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const doc = await client.db().collection('exams').findOne({ // 시험 정보
             accessCode: id
         });
@@ -65,7 +63,7 @@ router.get('/exam/:id', async (req, res, next) => {
 router.get('/delete/:id', async (req, res, next) => { // 시험 삭제
     const id = req.params.id;
     if (req.session.email) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const examObjectId = await client.db().collection('exams').findOne({
             accessCode: id
         });
@@ -101,7 +99,7 @@ router.post('/new', async (req, res, next) => {
     const endTime = req.body["end-time"];
     const accessCode = req.body["access-code"];
     if (req.session.email && title && startTime && endTime && accessCode) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const result1 = await client.db().collection('exams').insertOne({ // 시험 생성
             accessCode,
             status: 0,
@@ -124,7 +122,7 @@ router.post('/new', async (req, res, next) => {
 router.get('/questions/:id', async (req, res, next) => { // 문제 목록
     const id = req.params.id;
     if (req.session.email) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const doc = await client.db().collection('exams').findOne({
             accessCode: id
         });
@@ -156,7 +154,7 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     const score = req.body['score'];
     const answer = req.body['answer'];
     if (req.session.email && id) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const result = await client.db().collection('exams').updateOne({
             accessCode: id
         }, {
@@ -198,7 +196,7 @@ router.post('/questions/:id/edit/:num', async (req, res, next) => { // 문제 �
     const answer = req.body['answer'];
     if (req.session.email && id) {
 
-        const client = await db.getClient();
+        const client = await db.connect();
 
         const updatedQuestion = {};
         updatedQuestion[`questions.${num - 1}`] = {
@@ -225,7 +223,7 @@ router.post('/questions/:id/edit/:num', async (req, res, next) => { // 문제 �
 router.get('/users/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const doc = await client.db().collection('exams').findOne({
             accessCode: id
         }, {
@@ -270,7 +268,7 @@ router.post('/users/new/:id', async (req, res, next) => {
     const name = req.body['name'];
     const accessCode = req.body['access-code'];
     if (req.session.email && id && email && name && accessCode) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const result = await client.db().collection('users').insertOne({
             email,
             name,
@@ -291,7 +289,7 @@ router.post('/users/new/:id', async (req, res, next) => {
 router.get('/supervise/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
-        const client = await db.getClient();
+        const client = await db.connect();
         const exam = await client.db().collection('exams').findOne({
             accessCode: id
         });
