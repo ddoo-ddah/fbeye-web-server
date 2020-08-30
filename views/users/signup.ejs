@@ -6,11 +6,7 @@
     </head>
     <body>
 <div class="container mt-3">
-    <% if (flash.danger) { %>
-        <div class="alert alert-danger" role="alert">
-            <%= flash.danger %>
-        </div>
-    <% } %>
+    <% include ../common/alert %>
     <div class="row">
         <div class="col-md"></div>
         <div class="col-md">

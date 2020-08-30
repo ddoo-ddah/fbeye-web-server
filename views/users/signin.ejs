@@ -20,16 +20,7 @@ body {
     </head>
     <body>
 <div class="container mt-3">
-    <% if (flash.success) { %>
-        <div class="alert alert-success" role="alert">
-            <%= flash.success %>
-        </div>
-    <% } %>
-    <% if (flash.danger) { %>
-        <div class="alert alert-danger" role="alert">
-            <%= flash.danger %>
-        </div>
-    <% } %>
+    <% include ../common/alert %>
     <h1 id="title" class="text-center">FBEye</h1>
     <div class="row">
         <div class="col-md"></div>
