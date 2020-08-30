@@ -21,12 +21,12 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-11">
+                <div class="col-md-10">
                     <h5 class="card-title">문제</h5>
                     <h6 class="card-subtitle mb-2 text-muted"><%= exam.questions.length %></h6>
                 </div>
                 <div class="col-md text-right">
-                    <a href="/exams/questions/<%= exam.accessCode %>" class="btn btn-secondary">관리</a>
+                    <a href="/exams/questions/<%= exam.accessCode %>" class="btn btn-secondary">⚙ 관리</a>
                 </div>
             </div>
         </div>
@@ -34,19 +34,19 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-11">
+                <div class="col-md-10">
                     <h5 class="card-title">응시자</h5>
                     <h6 class="card-subtitle mb-2 text-muted"><%= exam.users.length %></h6>
                 </div>
                 <div class="col-md text-right">
-                    <a href="/exams/users/<%= exam.accessCode %>" class="btn btn-secondary">관리</a>
+                    <a href="/exams/users/<%= exam.accessCode %>" class="btn btn-secondary">⚙ 관리</a>
                 </div>
             </div>
         </div>
     </div><br>
     <p class="text-right">
-        <a href="/exams/delete/<%= exam.accessCode %>" class="btn btn-danger">삭제</a>
-        <a href="/exams" class="btn btn-primary">확인</a>
+        <a href="/exams/delete/<%= exam.accessCode %>" class="btn btn-danger">🗑 삭제</a>
+        <a href="/exams" class="btn btn-primary">✔ 확인</a>
     </p>
 </div>
     </body>

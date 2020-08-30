@@ -9,17 +9,17 @@
 <div class="container clearfix">
     <div class="mt-3"></div>
     <h3 class="float-left" style="display: inline;">시험 감독 - <%= exam.title %></h3>
-    <a href="/exams" class="btn btn-light float-right">뒤로</a>
+    <a href="/exams" class="btn btn-light float-right">↩ 뒤로</a>
 </div>
 <div class="container-fluid">
     <div class="row">
         <!-- 참여자 목록 -->
         <div class="col-md-3">
             <div class="card">
-                <div class="card-header">참여자 목록</div>
+                <div class="card-header">📃 참여자 목록</div>
                 <ul class="list-group list-group-flush" name="examinees-list">
                     <% for (let i = 0; i < users.length; ++i) { %>
-                        <li class="list-group-item"><%= users[i].name %></li>
+                        <li class="list-group-item">👩🏻 <%= users[i].name %> (<a href="mailto:<%= users[i].email %>"><%= users[i].email %></a>)</li>
                     <% } %>
                 </ul>
             </div>
@@ -27,7 +27,7 @@
         <!-- 메인(참여자 영상/부정행위 로그) -->
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">참여자 영상</div>
+                <div class="card-header">📺 참여자 영상</div>
                 <div class="card-body">
                     <!-- TODO: 선택한 참여자 영상 보기 -->
                     <img id="image-eye" alt="eye image">
@@ -37,7 +37,7 @@
         <!-- 채팅 -->
         <div class="col-md-3">
             <div class="card">
-                <div class="card-header">채팅</div>
+                <div class="card-header">💬 채팅</div>
                 <div class="card-body">
                     <div class="card" id="card-chatlog" style="height: 660px;">
                         <!-- 채팅 로그 카드 -->
@@ -46,7 +46,7 @@
                         <div class="input-group">
                             <input type="text" name="message" class="form-control" placeholder="메시지 입력" aria-label="메시지 입력" aria-describedby="button-submit">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit" id="button-submit">전송</button>
+                                <button class="btn btn-outline-secondary" type="submit" id="button-submit">✈ 전송</button>
                             </div>
                         </div>
                     </form>
