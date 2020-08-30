@@ -1,11 +1,11 @@
 const express = require('express');
 const db = require('../lib/db');
 const crypto = require('../lib/crypto');
-const { ObjectId } = require('mongodb');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     if (req.session.email) {
+        const flash = req.flash();
         const client = await db.getClient();
         const doc = await client.db().collection('admin').findOne({ // 관리자 계정 정보 가져오기
             email: req.session.email
@@ -21,7 +21,8 @@ router.get('/', async (req, res, next) => {
         }
         await client.close();
         res.render('exams/index', {
-            exams
+            exams,
+            flash
         });
     } else {
         res.redirect('/');
@@ -61,7 +62,7 @@ router.get('/exam/:id', async (req, res, next) => {
     }
 });
 
-router.post('/exam/:id', async (req, res, next) => { // 시험 삭제
+router.get('/delete/:id', async (req, res, next) => { // 시험 삭제
     const id = req.params.id;
     if (req.session.email) {
         const client = await db.getClient();
@@ -71,13 +72,12 @@ router.post('/exam/:id', async (req, res, next) => { // 시험 삭제
         await client.db().collection('exams').deleteOne({
             _id: examObjectId._id
         });
-        await client.db().collection('admin').updateOne(
-            {
-                email: req.session.email
-            },
-            {
-                $pull: { exams: examObjectId._id }
-            });
+        await client.db().collection('admin').updateOne({
+            email: req.session.email
+        }, {
+            $pull: { exams: examObjectId._id }
+        });
+        req.flash('success', `시험 ${examObjectId.title}이(가) 삭제되었습니다.`);
     }
 
     res.redirect('/exams');
@@ -200,7 +200,7 @@ router.post('/questions/:id/edit/:num', async (req, res, next) => { // 문제 �
 
         const client = await db.getClient();
 
-        const updatedQuestion = { };
+        const updatedQuestion = {};
         updatedQuestion[`questions.${num - 1}`] = {
             type: type,
             question: question,
