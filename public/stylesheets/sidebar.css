@@ -1,0 +1,45 @@
+body {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    position: fixed;
+    width: 250px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+  
+.container {
+    width: 100%;
+    padding: 20px;
+}
+  
+.sidebar-nav {
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+  
+.sidebar-nav li {
+    text-indent: 1.5em;
+    line-height: 2.8em;
+}
+  
+.sidebar-nav li a {
+    color: lightgray;
+    display: block;
+    text-decoration: none;
+}
+  
+.sidebar-nav li a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+}
+  
+.sidebar-nav > .sidebar-brand {
+    font-size: 1.3em;
+    line-height: 3em;
+}

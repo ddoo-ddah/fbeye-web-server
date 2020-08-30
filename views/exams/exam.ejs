@@ -5,7 +5,9 @@
         <% include ../common/head %>
     </head>
     <body>
-<div class="container mt-3">
+<% include ../common/sidebar %>
+<div class="container">
+    <div class="mt-3"></div>
     <h3>시험 개요</h3>
     <div class="card">
         <div class="card-body">
@@ -18,15 +20,15 @@
     </div><br>
     <div class="card">
         <div class="card-body">
-                <div class="row">
-                    <div class="col-md-11">
-                        <h5 class="card-title">문제</h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><%= exam.questions.length %></h6>
-                    </div>
-                    <div class="col-md text-right">
-                        <a href="/exams/questions/<%= exam.accessCode %>" class="btn btn-secondary">관리</a>
-                    </div>
+            <div class="row">
+                <div class="col-md-11">
+                    <h5 class="card-title">문제</h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><%= exam.questions.length %></h6>
                 </div>
+                <div class="col-md text-right">
+                    <a href="/exams/questions/<%= exam.accessCode %>" class="btn btn-secondary">관리</a>
+                </div>
+            </div>
         </div>
     </div><br>
     <div class="card">
@@ -42,10 +44,10 @@
             </div>
         </div>
     </div><br>
-        <form method="post" class="text-right">
-            <button type="submit" class="btn btn-danger">시험 삭제하기</button>
-            <a href="/exams" class="btn btn-primary">확인</a>
-        </form>
+    <form method="post" class="text-right">
+        <button type="submit" class="btn btn-danger">시험 삭제하기</button>
+        <a href="/exams" class="btn btn-primary">확인</a>
+    </form>
 </div>
     </body>
 </html>
