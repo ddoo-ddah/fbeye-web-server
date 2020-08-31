@@ -57,6 +57,19 @@ window.onload = event => {
 
 function createSpeechBubble(sender, message, timestamp) {
     const div = document.createElement('div');
-    div.innerHTML = `👩🏻 ${sender}<br><div class="card d-inline-block ml-4 p-1">${message}</div><br><span class="text-muted float-right">${timestamp}</span>`;
+    div.innerText = `👩🏻 ${sender}`;
+    div.appendChild(document.createElement('br'));
+
+    const m = document.createElement('div');
+    m.className = 'card d-inline-block ml-4 p-1';
+    m.innerText = message;
+    div.appendChild(m);
+    div.appendChild(document.createElement('br'));
+
+    const t = document.createElement('span');
+    t.className = 'text-muted float-right';
+    t.innerText = timestamp;
+    div.appendChild(t);
+
     return div;
 }
