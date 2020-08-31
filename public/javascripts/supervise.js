@@ -1,4 +1,4 @@
-base64toBlob = (base64Data, contentType) => {
+const base64toBlob = (base64Data, contentType) => {
     contentType = contentType || '';
     let sliceSize = 512;
     let byteCharacters = atob(base64Data);
@@ -40,11 +40,10 @@ window.onload = event => {
     socket.on('welcome', (data) => {
         socket.broadcast.emit('welcome', '');
     }).on('chat', (data) => {
-        const pItem = document.createElement('p');
-        pItem.style.cssText = 'margin: 2px 0px 2px';
-        chatlog.appendChild(pItem).innerHTML = `(${data.timestamp}) ${data.content}`;
+        chatlog.appendChild(createSpeechBubble(data.content.split(':')[0], data.content.split(':')[1], data.timestamp));
+        chatlog.scrollTop = chatlog.scrollHeight;
     }).on('disconnect', (data) => {
-        
+
     });
 
     /* 눈 - eye */
@@ -54,4 +53,10 @@ window.onload = event => {
         const imageUrl = urlCreator.createObjectURL(blobData);
         image.src = imageUrl;
     });
+}
+
+function createSpeechBubble(sender, message, timestamp) {
+    const div = document.createElement('div');
+    div.innerHTML = `👩🏻 ${sender}<br><div class="card d-inline-block ml-4 p-1">${message}</div><br><span class="text-muted float-right">${timestamp}</span>`;
+    return div;
 }
