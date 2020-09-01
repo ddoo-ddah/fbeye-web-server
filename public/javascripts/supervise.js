@@ -28,7 +28,6 @@ window.onload = event => {
     const chatform = document.querySelector('#chat');
     const chatlog = document.querySelector('#card-chatlog');
     const message = document.querySelector('input[name="message"]');
-
     chatform.addEventListener('submit', (event) => { // 메시지 전송
         event.preventDefault();
         if (message.value === '') {
@@ -47,7 +46,6 @@ window.onload = event => {
         
     });
 
-    /* 눈 - eye */
     socket.on('eye', (data) => {
         blobData = base64toBlob(data, 'image/jpg');
         const urlCreator = window.URL || window.webkitURL;
