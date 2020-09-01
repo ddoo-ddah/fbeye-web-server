@@ -19,7 +19,9 @@
                 <div class="card-header">참여자 목록</div>
                 <ul class="list-group list-group-flush" name="examinees-list">
                     <% for (let i = 0; i < users.length; ++i) { %>
-                        <li class="list-group-item"><%= users[i].name %></li>
+                        <a href="#" id="list-item">
+                            <li class="list-group-item"><%= users[i].name %></li> <!-- TODO: 선택해서 앱으로 사진 전송 요청 보내기 -->
+                        </a>
                     <% } %>
                 </ul>
             </div>
@@ -30,7 +32,7 @@
                 <div class="card-header">참여자 영상</div>
                 <div class="card-body">
                     <!-- TODO: 선택한 참여자 영상 보기 -->
-                    <img id="image-eye" alt="eye image">
+                    <img src="/res/eye-default.png" id="image-eye" alt="eye image">
                 </div>
             </div>
         </div>
