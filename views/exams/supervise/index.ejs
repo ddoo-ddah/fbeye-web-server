@@ -19,13 +19,7 @@
                 <div class="card-header">📃 참여자 목록</div>
                 <ul class="list-group list-group-flush" name="examinees-list">
                     <% for (let i = 0; i < users.length; ++i) { %>
-<<<<<<< HEAD
-                        <a href="#" id="list-item">
-                            <li class="list-group-item"><%= users[i].name %></li> <!-- TODO: 선택해서 앱으로 사진 전송 요청 보내기 -->
-                        </a>
-=======
                         <li class="list-group-item">👩🏻 <%= users[i].name %> (<a href="mailto:<%= users[i].email %>"><%= users[i].email %></a>)</li>
->>>>>>> 201df5f6db4f4d72d9ed007fd45612f54224a5c6
                     <% } %>
                 </ul>
             </div>

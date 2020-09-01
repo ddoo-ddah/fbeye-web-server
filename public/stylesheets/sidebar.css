@@ -17,13 +17,16 @@ body {
 }
   
 .sidebar-nav {
+    display: flex;
+    flex-direction: column;
     width: 250px;
+    height: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
     font-family: 'S-Core Dream', sans-serif;
 }
-  
+
 .sidebar-nav li {
     text-indent: 1.5em;
     line-height: 2.8em;
@@ -43,4 +46,16 @@ body {
 .sidebar-nav > .sidebar-brand {
     font-size: 1.3em;
     line-height: 3em;
+}
+
+.sidebar-nav > :last-child {
+    margin-top: auto;
+}
+
+.sidebar-nav > :last-child a {
+    color: indianred;
+}
+
+.sidebar-nav > :last-child a:hover {
+    color: maroon;
 }
