@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>회원가입 - FBEye</title>
-        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+        <% include ../common/head %>
+        <link rel="stylesheet" href="/stylesheets/users.css">
     </head>
     <body>
 <div class="container mt-3">
-    <% if (flash.danger) { %>
-        <div class="alert alert-danger" role="alert">
-            <%= flash.danger %>
-        </div>
-    <% } %>
+    <% include ../common/alert %>
     <div class="row">
         <div class="col-md"></div>
         <div class="col-md">

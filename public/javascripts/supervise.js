@@ -1,4 +1,4 @@
-base64toBlob = (base64Data, contentType) => {
+const base64toBlob = (base64Data, contentType) => {
     contentType = contentType || '';
     let sliceSize = 512;
     let byteCharacters = atob(base64Data);
@@ -39,11 +39,10 @@ window.onload = event => {
     socket.on('welcome', (data) => {
         socket.broadcast.emit('welcome', '');
     }).on('chat', (data) => {
-        const pItem = document.createElement('p');
-        pItem.style.cssText = 'margin: 2px 0px 2px';
-        chatlog.appendChild(pItem).innerHTML = `(${data.timestamp}) ${data.content}`;
+        chatlog.appendChild(createSpeechBubble(data.content.split(':')[0], data.content.split(':')[1], data.timestamp));
+        chatlog.scrollTop = chatlog.scrollHeight;
     }).on('disconnect', (data) => {
-        
+
     });
 
     socket.on('eye', (data) => {
@@ -52,4 +51,23 @@ window.onload = event => {
         const imageUrl = urlCreator.createObjectURL(blobData);
         image.src = imageUrl;
     });
+}
+
+function createSpeechBubble(sender, message, timestamp) {
+    const div = document.createElement('div');
+    div.innerText = `👩🏻 ${sender}`;
+    div.appendChild(document.createElement('br'));
+
+    const m = document.createElement('div');
+    m.className = 'card d-inline-block ml-4 p-1';
+    m.innerText = message;
+    div.appendChild(m);
+    div.appendChild(document.createElement('br'));
+
+    const t = document.createElement('span');
+    t.className = 'text-muted float-right';
+    t.innerText = timestamp;
+    div.appendChild(t);
+
+    return div;
 }
