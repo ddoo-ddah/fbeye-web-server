@@ -5,3 +5,9 @@ body {
 h1, h2, h3, h4, h5, h6, label, th, .card-header, .btn {
   font-family: 'S-Core Dream', sans-serif;
 }
+
+#card-chatlog {
+  height: 46em;
+  overflow: auto;
+  background-color: skyblue;
+}

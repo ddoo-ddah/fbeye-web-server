@@ -50,6 +50,7 @@ body {
 
 .sidebar-nav > :last-child {
     margin-top: auto;
+    margin-bottom: 0.5em;
 }
 
 .sidebar-nav > :last-child a {
@@ -57,5 +58,5 @@ body {
 }
 
 .sidebar-nav > :last-child a:hover {
-    color: maroon;
+    color: orangered;
 }
