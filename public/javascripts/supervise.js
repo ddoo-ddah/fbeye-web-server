@@ -39,7 +39,7 @@ window.onload = event => {
     socket.on('welcome', (data) => {
         socket.broadcast.emit('welcome', '');
     }).on('chat', (data) => {
-        chatlog.appendChild(createSpeechBubble(data.content.split(':')[0], data.content.split(':')[1], data.timestamp));
+        chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp));
         chatlog.scrollTop = chatlog.scrollHeight;
     }).on('disconnect', (data) => {
 
