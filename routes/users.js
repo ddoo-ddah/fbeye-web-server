@@ -1,4 +1,5 @@
 const express = require('express');
+const usersApp = require('../apps/users');
 const db = require('../lib/db');
 const crypto = require('../lib/crypto');
 const router = express.Router();
@@ -21,15 +22,10 @@ router.get('/signin', (req, res, next) => {
 
 router.post('/signin', async (req, res, next) => {
   const email = req.body["email"];
-  const password = await crypto.scrypt(req.body["password"], 'my salt', 32);
+  const password = req.body["password"];
   if (!req.session.email && email && password) {
-    const client = await db.getClient();
-    const doc = await client.db().collection('admin').findOne({
-      email
-    });
-    await client.close();
-
-    if (doc && (password.compare(doc.password.buffer) === 0)) { // 로그인 성공
+    const result = await usersApp.signIn(email, password);
+    if (result) { // 로그인 성공
       req.session.email = email;
     } else { // 로그인 실패
       req.flash('danger', '이메일 또는 패스워드가 맞지 않습니다.');
@@ -66,7 +62,7 @@ router.post('/signup', async (req, res, next) => {
   if (!req.session.email && email && password) {
     if (req.body["password"] === req.body["password-confirm"]) {
       const client = await db.getClient();
-      if (!await client.db().collection('admin').findOne({email: email})) {
+      if (!await client.db().collection('admin').findOne({ email: email })) {
         const result = await client.db().collection('admin').insertOne({
           email,
           password
