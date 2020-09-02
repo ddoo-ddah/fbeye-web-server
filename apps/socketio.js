@@ -1,6 +1,6 @@
 module.exports = (server) => {
     const io = require('socket.io')(server);
-    const db = require('./db');
+    const db = require('../lib/db');
 
     io.on('connection', async (socket) => {
         let socketIDUserMap = new Map();
@@ -28,7 +28,7 @@ module.exports = (server) => {
                 message: data
             };
             io.emit('chat', chatData); // 클라이언트들에게 채팅 돌리기
-            const client = await db.getClient();
+            const client = await db.connect;
             const chatLogs = client.db().collection('exams').updateOne( // db에 채팅 로그 업데이트
                 {
                     accessCode: examCode
