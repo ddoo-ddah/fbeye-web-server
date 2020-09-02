@@ -87,7 +87,7 @@ function removeExam(accessCode, email) {
             email
         }, {
             $pull: {
-                exams: examObjectId._id
+                exams: doc._id
             }
         });
         await client.close();
