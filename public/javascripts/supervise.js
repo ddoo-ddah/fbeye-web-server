@@ -1,4 +1,4 @@
-// const db = require('../../lib/db'); 이거 안됨 TODO: 클라이언트 측에서 서버 DB에 연결하는 법
+// const db = require('../../lib/db'); 이거 안됨 TODO: 클라이언트 측에서 서버 DB에 연결하기 or 서버에서 여기로 정보 주기
 
 const base64toBlob = (base64Data, contentType) => {
     contentType = contentType || '';
@@ -23,19 +23,16 @@ const base64toBlob = (base64Data, contentType) => {
 
 // socket.io 관련 event
 window.onload = async event => {
+    
+    const socket = io();
 
+    // 참여자 목록 이벤트
     const userlist = document.querySelector('#user-list').children;
-    console.log(userlist);
-    // const client = await db.getClient();
-    // const users = await client.db().collection('users').find({ DB 사용 안됨
-    //     _id: { $in: exam.users }
-    // }).toArray();
-    for (let i = 0; i < userlist.length; ++i) { // todo: welcome했는지에 따라서 색깔 다르게 표시되도록 변경
-        if (i % 2) {
+    for (let i = 0; i < userlist.length; ++i) {
+        if (i % 2) { // TODO: 이벤트 리스너로 해당 유저가 welcome했는지에 따라서 색깔 다르게 표시되도록 변경
             userlist[i].firstChild.className = 'list-group-item list-group-item-danger';
         }
     }
-
 
     /* 채팅 - welcome, chat, disconnect */
     const chatform = document.querySelector('#chat');
@@ -45,21 +42,33 @@ window.onload = async event => {
         if (message.value === '') {
             return;
         }
-        socket.emit('chat', message.value);
+        socket.emit('chat', {
+            message: message.value
+        });
         message.value = '';
     });
     const chatlog = document.querySelector('#card-chatlog');
-    const socket = io();
-    socket.emit('welcome', { // 입장할 때 이름 주기
-        
+    socket.emit('welcome', { // 웰컴 메시지로 이름 뿌리기
+        name: '감독'
     });
-    socket.on('chat', (data) => {
+    socket.on('chat', (data) => { // 채팅 왔을때 채팅로그에 온 채팅 추가하기
         chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp));
         chatlog.scrollTop = chatlog.scrollHeight;
-    }).on('disconnect', (data) => {
+    }).on('disconnect', (data) => { // 연결 끊겼을때
 
     });
 
+    /* mobile - 서버 측: mobile-welcome, mobile-disconnect
+                클라 측: requset-data, eye, stop-data */
+    for (const a of userlist) {
+        a.addEventListener('click', event => {
+            const userCode = a.id;
+            socket.emit('stop-data'); // 전송하고 있던 디바이스한테 전송 멈추게 하고
+            socket.emit('request-data', { // userCode에 맞는 디바이스만 전송 시작하도록 서버에 유저코드 보냄
+                userCode: userCode
+            });
+        });
+    }
     socket.on('eye', (data) => {
         blobData = base64toBlob(data, 'image/jpg');
         const urlCreator = window.URL || window.webkitURL;
