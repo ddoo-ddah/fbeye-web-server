@@ -79,6 +79,7 @@ window.onload = async event => {
 
 function createSpeechBubble(sender, message, timestamp) {
     const div = document.createElement('div');
+    div.className = 'px-1';
     div.innerText = `👩🏻 ${sender}`;
     div.appendChild(document.createElement('br'));
 

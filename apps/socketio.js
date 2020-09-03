@@ -1,6 +1,6 @@
 module.exports = (server) => {
     const io = require('socket.io')(server);
-    const db = require('./db');
+    const db = require('../lib/db');
 
     const getTimestamp = () => {
         const time = new Date();
@@ -75,10 +75,15 @@ module.exports = (server) => {
                 sender: socketIDUserMap.get(socket.id).name,
                 message: data.message
             };
+<<<<<<< HEAD:lib/socketio.js
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기
             io.emit('desktop-chat', chatData); // 클라이언트들에게 채팅 뿌리기
             const client = await db.getClient();
+=======
+            io.emit('chat', chatData); // 클라이언트들에게 채팅 돌리기
+            const client = await db.connect;
+>>>>>>> a8a79077e1aa7d2efaf8e72f3036130817521858:apps/socketio.js
             const chatLogs = client.db().collection('exams').updateOne( // db에 채팅 로그 업데이트
                 {
                     accessCode: socketIDExamMap.get(socket.id)
