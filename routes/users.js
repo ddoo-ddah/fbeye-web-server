@@ -1,5 +1,5 @@
 const express = require('express');
-const usersApp = require('../apps/users');
+const userApp = require('../apps/users');
 const db = require('../lib/db');
 const crypto = require('../lib/crypto');
 const router = express.Router();
@@ -24,7 +24,7 @@ router.post('/signin', async (req, res, next) => {
   const email = req.body["email"];
   const password = req.body["password"];
   if (!req.session.email && email && password) {
-    const result = await usersApp.signIn(email, password);
+    const result = await userApp.signIn(email, password);
     if (result) { // 로그인 성공
       req.session.email = email;
     } else { // 로그인 실패
@@ -62,7 +62,7 @@ router.post('/signup', async (req, res, next) => {
   const passwordConfirm = req.body['password-confirm'];
   if (!req.session.email && email && password && passwordConfirm) {
     if (password === passwordConfirm) {
-      const result = await usersApp.signUp({
+      const result = await userApp.signUp({
         email,
         password
       });
@@ -94,7 +94,7 @@ router.get('/escape', (req, res, next) => {
 router.post('/escape', async (req, res, next) => {
   const password = req.body['password'];
   if (req.session.email && password) {
-    const result = await usersApp.escape(req.session.email, password);
+    const result = await userApp.escape(req.session.email, password);
     if (result) {
       res.redirect('/users/signout'); // 로그아웃
     } else {

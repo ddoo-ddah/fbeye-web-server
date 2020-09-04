@@ -1,5 +1,5 @@
 const express = require('express');
-const examsApp = require('../apps/exams');
+const examApp = require('../apps/exam');
 const db = require('../lib/db');
 const crypto = require('../lib/crypto');
 const router = express.Router();
@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     if (req.session.email) {
         const flash = req.flash();
-        const exams = await examsApp.getExams(req.session.email);
+        const exams = await examApp.getExams(req.session.email);
         res.render('exams/index', {
             exams,
             flash
@@ -20,7 +20,7 @@ router.get('/', async (req, res, next) => {
 router.get('/exam/:id', async (req, res, next) => {
     const id = req.params.id;
     if (req.session.email) {
-        const exam = await examsApp.getExamInformation(id);
+        const exam = await examApp.getExamInformation(id);
         res.render('exams/exam', {
             exam
         });
@@ -47,7 +47,7 @@ router.post('/new', (req, res, next) => {
     const endTime = req.body["end-time"];
     const accessCode = req.body["access-code"];
     if (req.session.email && title && startTime && endTime && accessCode) {
-        examsApp.addExam({
+        examApp.addExam({
             title,
             startTime,
             endTime,
@@ -60,7 +60,7 @@ router.post('/new', (req, res, next) => {
 router.get('/delete/:id', async (req, res, next) => { // 시험 삭제
     const id = req.params.id;
     if (req.session.email) {
-        const result = await examsApp.removeExam(id);
+        const result = await examApp.removeExam(id);
         if (result) {
             req.flash('success', `시험 ${examObjectId.title}이(가) 삭제되었습니다.`);
         }
@@ -72,7 +72,7 @@ router.get('/delete/:id', async (req, res, next) => { // 시험 삭제
 router.get('/questions/:id', async (req, res, next) => { // 문제 목록
     const id = req.params.id;
     if (req.session.email) {
-        const questions = await examsApp.getQuestions(id);
+        const questions = await examApp.getQuestions(id);
         res.render('exams/questions/index', {
             id,
             questions
@@ -100,7 +100,7 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     const score = req.body['score'];
     const answer = req.body['answer'];
     if (req.session.email && id) {
-        examsApp.addQuestion(id, {
+        examApp.addQuestion(id, {
             type,
             question,
             score,
