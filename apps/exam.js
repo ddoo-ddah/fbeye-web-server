@@ -40,10 +40,12 @@ function getExamInformation(accessCode) {
                     $in: doc.users
                 }
             }, {
-                _id: false,
-                email: true,
-                name: true,
-                accessCode: true
+                projection: {
+                    _id: false,
+                    email: true,
+                    name: true,
+                    accessCode: true
+                }
             }).toArray()
         ) : [];
         await client.close();
@@ -77,6 +79,10 @@ function removeExam(accessCode, email) {
         const client = await db.connect();
         const doc = await client.db().collection('exams').findOne({
             accessCode
+        }, {
+            projection: {
+                _id: true
+            }
         });
 
         const result1 = await client.db().collection('exams').deleteOne({
@@ -105,6 +111,11 @@ function getQuestions(accessCode) {
         const client = await db.connect();
         const doc = await client.db().collection('exams').findOne({
             accessCode
+        }, {
+            projection: {
+                _id: false,
+                questions: true
+            }
         });
         await client.close();
 
