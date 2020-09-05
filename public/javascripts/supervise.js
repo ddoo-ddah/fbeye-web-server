@@ -62,18 +62,25 @@ window.onload = async event => {
                 클라 측: requset-data, eye, stop-data */
     for (const a of userlist) {
         a.addEventListener('click', event => {
-            const userCode = a.id;
-            socket.emit('stop-data'); // 전송하고 있던 디바이스한테 전송 멈추게 하고
+            const name = a.innerText.match(/\((.*?)\)/);
+            console.log(name);
+            const userCode = a.id; // TODO: userCode 말고 email을 전송하는 거로 바꾸기
+            socket.emit('stop-data'); // 전송하고 있던 디바이스한테 전송 멈추게 하고 (TODO: 딜레이 때문에 살짝 다르게 동작하는 것 고치기)
             socket.emit('request-data', { // userCode에 맞는 디바이스만 전송 시작하도록 서버에 유저코드 보냄
+                type: 'RES',
                 userCode: userCode
             });
         });
     }
+
+    const image = document.querySelector('#image-eye');
     socket.on('eye', (data) => {
         blobData = base64toBlob(data, 'image/jpg');
         const urlCreator = window.URL || window.webkitURL;
         const imageUrl = urlCreator.createObjectURL(blobData);
         image.src = imageUrl;
+    }).on('stop-data', () => {
+        image.src = '/images/eye-def.jpg';
     });
 }
 
