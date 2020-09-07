@@ -1,5 +1,3 @@
-// const db = require('../../lib/db'); 이거 안됨 TODO: 클라이언트 측에서 서버 DB에 연결하기 or 서버에서 여기로 정보 주기
-
 const base64toBlob = (base64Data, contentType) => {
     contentType = contentType || '';
     let sliceSize = 512;
@@ -62,9 +60,8 @@ window.onload = async event => {
                 클라 측: requset-data, eye, stop-data */
     for (const a of userlist) {
         a.addEventListener('click', event => {
-            const name = a.innerText.match(/\((.*?)\)/);
-            console.log(name);
-            const userCode = a.id; // TODO: userCode 말고 email을 전송하는 거로 바꾸기
+            // const mailAddress = a.innerText.match(/\((.*?)\)/)[1]; // TODO?: userCode 말고 email을 전송하는 거로 바꾸기
+            const userCode = a.id;
             socket.emit('stop-data'); // 전송하고 있던 디바이스한테 전송 멈추게 하고 (TODO: 딜레이 때문에 살짝 다르게 동작하는 것 고치기)
             socket.emit('request-data', { // userCode에 맞는 디바이스만 전송 시작하도록 서버에 유저코드 보냄
                 type: 'RES',
@@ -80,7 +77,7 @@ window.onload = async event => {
         const imageUrl = urlCreator.createObjectURL(blobData);
         image.src = imageUrl;
     }).on('stop-data', () => {
-        image.src = '/images/eye-def.jpg';
+        image.src = '/images/eye-default.png';
     });
 }
 
