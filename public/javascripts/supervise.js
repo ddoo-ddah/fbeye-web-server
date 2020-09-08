@@ -86,6 +86,14 @@ window.onload = async event => {
         eyeImage.src = '/images/eye-default.png';
         screenImage.src = '/images/screen-default.png';
     });
+    
+    /* 부정 행위 로그 */
+    const cheatingLog = document.querySelector('#card-cheatinglog');
+    socket.on('cheat', (data) => {
+        const log = document.createElement('p');
+        log.innerText = `(${data.timestamp}) ${data.userName} : ${data.content}`;
+        cheatingLog.appendChild(log);
+    });
 }
 
 function createSpeechBubble(sender, message, timestamp) {

@@ -116,5 +116,15 @@ module.exports = (server) => {
         socket.on('screen', (data) => { // 스크린 데이터 수신
             socket.broadcast.emit('screen', data); // TODO?: 바로 위 TODO와 동일
         });
+
+        /* socketio with desktop - cheatlog */
+        socket.on('cheat', (data) => {
+            const result = {
+                timestamp: getTimestamp(),
+                userName: socketIDUserMap.get(socket.id).name,
+                content: data
+            };
+            socket.broadcast.emit('cheat', result);
+        });
     });
 }
