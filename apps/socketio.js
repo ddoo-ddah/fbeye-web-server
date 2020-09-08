@@ -23,12 +23,11 @@ module.exports = (server) => {
     const io = require('socket.io')(server);
 
     const socketIDUserMap = new Map();
-    const socketIDMobileMap = new Map();
     const socketIDExamMap = new Map();
 
     io.on('connection', async (socket) => {
 
-        /* socketio with desktop */
+        /* socketio with desktop - chat */
         socket.on('desktop-welcome', async (data) => {
 
             const client = await db.getClient();
@@ -67,7 +66,7 @@ module.exports = (server) => {
         });
 
         /* socketio with supervisor */
-        socket.on('welcome', async (data) => {
+        socket.on('welcome', (data) => {
             socketIDUserMap.set(socket.id, {
                 name: data.name
             });
@@ -94,7 +93,7 @@ module.exports = (server) => {
                 }
             });
             await client.close();
-        }).on('disconnect', async (data) => {
+        }).on('disconnect', (data) => {
 
         });
 
@@ -106,12 +105,16 @@ module.exports = (server) => {
             console.log(data)
             io.emit('request-data', data);
         }).on('eye', (data) => { // 사진 데이터
-            socket.broadcast.emit('eye', data); // TODO: 시험 두개 동시 시작해서 각각 다른 eye 받는지 확인해야 함
+            socket.broadcast.emit('eye', data); // TODO?: 시험 두개 동시 시작해서 각각 다른 eye 받는지 확인해야 함.
         }).on('stop-data', () => { // 데이터 전송 중단 요청
             io.emit('stop-data');
         }).on('mobile-disconnect', (data) => { // 접속 해제
             
         });
+
+        /* socketio with desktop - screen */
+        socket.on('screen', (data) => { // 스크린 데이터 수신
+            socket.broadcast.emit('screen', data); // TODO?: 바로 위 TODO와 동일
+        });
     });
 }
-// TODO: eye와 같이 데스크탑 캡쳐해서 오는 것 처리

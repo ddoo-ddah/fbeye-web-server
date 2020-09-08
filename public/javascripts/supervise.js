@@ -70,14 +70,21 @@ window.onload = async event => {
         });
     }
 
-    const image = document.querySelector('#image-eye');
+    const eyeImage = document.querySelector('#image-eye');
+    const screenImage = document.querySelector('#image-screen');
     socket.on('eye', (data) => {
-        blobData = base64toBlob(data, 'image/jpg');
+        const blobData = base64toBlob(data, 'image/jpg');
         const urlCreator = window.URL || window.webkitURL;
         const imageUrl = urlCreator.createObjectURL(blobData);
-        image.src = imageUrl;
+        eyeImage.src = imageUrl;
+    }).on('screen', (data) => {
+        const blobData = base64toBlob(data, 'image/png');
+        const urlCreator = window.URL || window.webkitURL;
+        const imageUrl = urlCreator.createObjectURL(blobData);
+        screenImage.src = imageUrl;
     }).on('stop-data', () => {
-        image.src = '/images/eye-default.png';
+        eyeImage.src = '/images/eye-default.png';
+        screenImage.src = '/images/screen-default.png';
     });
 }
 
