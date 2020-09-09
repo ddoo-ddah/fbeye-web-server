@@ -34,8 +34,9 @@ module.exports = (server) => {
             const userInfo = await client.db().collection('users').findOne({
                 accessCode: data.data.userCode
             });
-            socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode, examcode를 매핑한다
             await client.close();
+            io.emit('welcome', userInfo); // 참여자 영상 패널에 나타내기 위해 감독에게 welcome 메시지를 보낸다
+            socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode, examcode를 매핑한다
             socketIDExamMap.set(socket.id, data.data.examCode);
 
         }).on('desktop-chat', async (data) => { // 채팅

@@ -26,11 +26,16 @@ window.onload = async event => {
 
     // 참여자 목록 이벤트
     const userlist = document.querySelector('#user-list').children;
-    for (let i = 0; i < userlist.length; ++i) {
-        if (i % 2) { // TODO: 이벤트 리스너로 해당 유저가 welcome했는지에 따라서 색깔 다르게 표시되도록 변경
-            userlist[i].firstChild.className = 'list-group-item list-group-item-danger';
+    console.log(userlist);
+    socket.on('welcome', (data) => {
+        const mailAddress = data.email;
+        console.log(mailAddress);
+        for (const a of userlist) {
+            if (mailAddress === a.innerText.match(/\((.*?)\)/)[1]) {
+                a.firstChild.className = 'list-group-item';
+            }
         }
-    }
+    });
 
     /* 채팅 - welcome, chat, disconnect */
     const chatform = document.querySelector('#chat');
