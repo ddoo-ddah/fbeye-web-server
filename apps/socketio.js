@@ -33,9 +33,8 @@ module.exports = (server) => {
             const client = await db.getClient();
             const userInfo = await client.db().collection('users').findOne({
                 accessCode: data.data.userCode
-            }).then((result) => {
-                socketIDUserMap.set(socket.id, result); // socket.id와 usercode, examcode를 매핑한다
             });
+            socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode, examcode를 매핑한다
             await client.close();
             socketIDExamMap.set(socket.id, data.data.examCode);
 
