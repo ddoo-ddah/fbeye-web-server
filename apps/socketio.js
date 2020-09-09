@@ -30,7 +30,7 @@ module.exports = (server) => {
         /* socketio with desktop - chat */
         socket.on('desktop-welcome', async (data) => {
 
-            const client = await db.getClient();
+            const client = await db.connect();
             const userInfo = await client.db().collection('users').findOne({
                 accessCode: data.data.userCode
             });
@@ -48,7 +48,7 @@ module.exports = (server) => {
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기
             io.emit('desktop-chat', chatData); // 클라이언트들에게 채팅 뿌리기
-            const client = await db.getClient();
+            const client = await db.connect();
             const chatLogs = await client.db().collection('exams').updateOne( // db에 채팅 로그 업데이트
                 {
                     accessCode: socketIDExamMap.get(socket.id)
@@ -78,7 +78,7 @@ module.exports = (server) => {
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기
             io.emit('desktop-chat', chatData); // 클라이언트들에게 채팅 뿌리기
-            const client = await db.getClient();
+            const client = await db.connect();
             const chatLogs = await client.db().collection('exams').updateOne( // db에 채팅 로그 업데이트
                 {
                     accessCode: socketIDExamMap.get(socket.id)
@@ -108,7 +108,7 @@ module.exports = (server) => {
         }).on('stop-data', () => { // 데이터 전송 중단 요청
             io.emit('stop-data');
         }).on('mobile-disconnect', (data) => { // 접속 해제
-            
+
         });
 
         /* socketio with desktop - screen */
