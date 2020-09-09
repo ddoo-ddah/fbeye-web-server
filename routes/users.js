@@ -1,7 +1,5 @@
 const express = require('express');
-const userApp = require('../apps/users');
-const db = require('../lib/db');
-const crypto = require('../lib/crypto');
+const userApp = require('../apps/user');
 const router = express.Router();
 
 /* GET users listing. */
