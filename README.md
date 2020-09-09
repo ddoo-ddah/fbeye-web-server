@@ -1,14 +1,17 @@
 # FBEye Web Server
 
+## 실행
+- `npm start`
+
 ## 기능
-[FBEye Web Server](fbeye.xyz)는 시험 감독자를 위한 시험 관리/감독 웹 어플리케이션입니다. 시험 관리자(감독) 계정으로 회원가입 및 로그인하여 사용할 수 있습니다.
+[FBEye Web Server](https://github.com/ddoo-ddah/fbeye-web-server)는 시험 감독자를 위한 시험 관리/감독 웹 어플리케이션입니다. 시험 관리자(감독) 계정으로 회원가입 및 로그인하여 사용할 수 있습니다.
 - 시험 관리 페이지, 문제 관리 페이지, 응시자 관리 페이지를 이용해 시험을 생성하거나 삭제할 수 있으며, 시험 문제와 응시자에 대한 정보를 수정할 수 있습니다.
 - 시험 도중 채팅으로 응시자들과 실시간으로 소통하며 시험에 관한 피드백을 빠르게 주고받을 수 있습니다.
 - 응시자가 부정 행위로 의심되는 행위를 할 시 해당 사항에 대한 로그가 감독관에게 전송됩니다. 감독관은 웹 페이지로 전송된 로그를 보고 누가 어떤 행위를 했는지 확인할 수 있습니다.
 - 참여자 목록에서 응시자를 선택하여 해당 응시자의 얼굴과 화면 영상을 실시간으로 볼 수 있습니다.
 
 ## 특징
-- 대표적인 자바스크립트 웹 서버 프레임워크인 Node.js와 Express.js를 사용하여 구현했습니다.
+- Javascript 런타임 Node.js와 웹 프레임워크 Express.js를 사용하여 구현했습니다.
 - socket.io를 통한 실시간 채팅 및 사진 스트리밍
 - MongoDB를 사용하여 DB 서버 구현
 
@@ -48,9 +51,9 @@ FBEye Web Server의 작동 원리에 대해 설명하는 파트입니다.
 - 채팅 패널에서는 시험에 대한 정보, 시험 문제에 대한 피드백 등을 실시간으로 참여자들과 주고받으며 소통할 수 있습니다.
 
 ## 외부 라이브러리
-- [Bootstrap](https://getbootstrap.com/) (페이지 디자인)
-- [Node.js](https://nodejs.org/en/) (웹 서버 프레임워크)
-- [Express.js](https://expressjs.com/) (Node.js 프레임워크)
+- [Bootstrap](https://getbootstrap.com/) (프론트엔드 프레임워크)
+- [Node.js](https://nodejs.org/en/) (Javascript 런타임)
+- [Express.js](https://expressjs.com/) (Node.js 웹 프레임워크)
 - [ejs (Jake)](https://ejs.co/) (템플릿 엔진)
-- [socket.io](https://socket.io/) (실시간 데이터 송/수신)
-- [MongoDB](https://www.mongodb.com/) (문서 데이터베이스(NoSQL))
+- [socket.io](https://socket.io/) (WebSocket 라이브러리)
+- [MongoDB](https://www.mongodb.com/) (문서형 NoSQL 데이터베이스)
