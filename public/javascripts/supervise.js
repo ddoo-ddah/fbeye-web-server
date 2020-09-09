@@ -20,36 +20,79 @@ const base64toBlob = (base64Data, contentType) => {
 }
 
 // socket.io 관련 event
-window.onload = event => {
-
+window.onload = async event => {
+    
     const socket = io();
+
+    // 참여자 목록 이벤트
+    const userlist = document.querySelector('#user-list').children;
+    for (let i = 0; i < userlist.length; ++i) {
+        if (i % 2) { // TODO: 이벤트 리스너로 해당 유저가 welcome했는지에 따라서 색깔 다르게 표시되도록 변경
+            userlist[i].firstChild.className = 'list-group-item list-group-item-danger';
+        }
+    }
 
     /* 채팅 - welcome, chat, disconnect */
     const chatform = document.querySelector('#chat');
-    const chatlog = document.querySelector('#card-chatlog');
     const message = document.querySelector('input[name="message"]');
     chatform.addEventListener('submit', (event) => { // 메시지 전송
         event.preventDefault();
         if (message.value === '') {
             return;
         }
-        socket.emit('chat', message.value);
+        socket.emit('chat', {
+            message: message.value
+        });
         message.value = '';
     });
-    socket.on('welcome', (data) => {
-        socket.broadcast.emit('welcome', '');
-    }).on('chat', (data) => {
+    const chatlog = document.querySelector('#card-chatlog');
+    socket.emit('welcome', { // 웰컴 메시지로 이름 뿌리기
+        name: '감독'
+    });
+    socket.on('chat', (data) => { // 채팅 왔을때 채팅로그에 온 채팅 추가하기
         chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp));
         chatlog.scrollTop = chatlog.scrollHeight;
-    }).on('disconnect', (data) => {
+    }).on('disconnect', (data) => { // 연결 끊겼을때
 
     });
 
+    /* mobile - 서버 측: mobile-welcome, mobile-disconnect
+                클라 측: requset-data, eye, stop-data */
+    for (const a of userlist) {
+        a.addEventListener('click', event => {
+            // const mailAddress = a.innerText.match(/\((.*?)\)/)[1]; // TODO?: userCode 말고 email을 전송하는 거로 바꾸기
+            const userCode = a.id;
+            socket.emit('stop-data'); // 전송하고 있던 디바이스한테 전송 멈추게 하고 (TODO: 딜레이 때문에 살짝 다르게 동작하는 것 고치기)
+            socket.emit('request-data', { // userCode에 맞는 디바이스만 전송 시작하도록 서버에 유저코드 보냄
+                type: 'RES',
+                userCode: userCode
+            });
+        });
+    }
+
+    const eyeImage = document.querySelector('#image-eye');
+    const screenImage = document.querySelector('#image-screen');
     socket.on('eye', (data) => {
-        blobData = base64toBlob(data, 'image/jpg');
+        const blobData = base64toBlob(data, 'image/jpg');
         const urlCreator = window.URL || window.webkitURL;
         const imageUrl = urlCreator.createObjectURL(blobData);
-        image.src = imageUrl;
+        eyeImage.src = imageUrl;
+    }).on('screen', (data) => {
+        const blobData = base64toBlob(data, 'image/png');
+        const urlCreator = window.URL || window.webkitURL;
+        const imageUrl = urlCreator.createObjectURL(blobData);
+        screenImage.src = imageUrl;
+    }).on('stop-data', () => {
+        eyeImage.src = '/images/eye-default.png';
+        screenImage.src = '/images/screen-default.png';
+    });
+    
+    /* 부정 행위 로그 */
+    const cheatingLog = document.querySelector('#card-cheatinglog');
+    socket.on('cheat', (data) => {
+        const log = document.createElement('p');
+        log.innerText = `(${data.timestamp}) ${data.userName} : ${data.content}`;
+        cheatingLog.appendChild(log);
     });
 }
 

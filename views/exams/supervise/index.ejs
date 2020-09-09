@@ -17,26 +17,26 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">📃 참여자 목록</div>
-                <ul class="list-group list-group-flush" name="examinees-list">
+                <ul class="list-group list-group-flush" id="user-list">
                     <% for (let i = 0; i < users.length; ++i) { %>
-                        <li class="list-group-item">👩🏻 <%= users[i].name %> (<a href="mailto:<%= users[i].email %>"><%= users[i].email %></a>)</li>
+                        <a href="#" class="select-user" id="<%= users[i].accessCode %>"><li class="list-group-item">👩🏻 <%= users[i].name %> (<%= users[i].email %>)</li></a>
                     <% } %>
                 </ul>
             </div>
         </div>
-        <!-- 메인(참여자 영상/부정행위 로그) -->
+        <!-- 메인(참여자 영상) -->
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">📺 참여자 영상</div>
                 <div class="card-body">
-                    <!-- TODO: 선택한 참여자 영상 보기 -->
                     <img src="/images/eye-default.png" id="image-eye" alt="eye image" style="width: 100%;">
+                    <img src="/images/screen-default.png" id="image-screen" alt="screen image" style="width: 100%;">
                 </div>
             </div>
         </div>
         <!-- 채팅 -->
         <div class="col-md-3">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header" style="background-color: skyblue;">💬 채팅</div>
                 <div>
                     <div class="card" id="card-chatlog">
@@ -50,6 +50,13 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <!-- 부정행위 로그 -->
+            <div class="card" style="height: 10em;">
+                <div class="card-header">📃 부정 행위 로그</div>
+                <div class="card-body" id="card-cheatinglog">
+                    <!-- 부정행위가 발생할 때마다 p 추가 -->
                 </div>
             </div>
         </div>
