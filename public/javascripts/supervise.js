@@ -57,8 +57,13 @@ window.onload = async event => {
     socket.on('chat', (data) => { // 채팅 왔을때 채팅로그에 온 채팅 추가하기
         chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp));
         chatlog.scrollTop = chatlog.scrollHeight;
-    }).on('disconnect', (data) => { // 연결 끊겼을때
-
+    }).on('desktop-disconnect', (data) => { // 데스크탑 연결 끊겼을때
+        const mailAddress = data.email;
+        for (const a of userlist) {
+            if (mailAddress === a.innerText.match(/\((.*?)\)/)[1]) {
+                a.firstChild.className = 'list-group-item list-group-item-danger';
+            }
+        }
     });
 
     /* mobile - 서버 측: mobile-welcome, mobile-disconnect

@@ -27,6 +27,9 @@ module.exports = (server) => {
 
     io.on('connection', async (socket) => {
 
+        console.log('socket.io connection'); // DEBUG
+        console.log(socket.id); // DEBUG
+
         /* socketio with desktop - chat */
         socket.on('desktop-welcome', async (data) => {
 
@@ -35,6 +38,8 @@ module.exports = (server) => {
                 accessCode: data.data.userCode
             });
             await client.close();
+            console.log('desktop welcome'); // DEBUG
+            console.log(userInfo); // DEBUG
             io.emit('welcome', userInfo); // 참여자 영상 패널에 나타내기 위해 감독에게 welcome 메시지를 보낸다
             socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode, examcode를 매핑한다
             socketIDExamMap.set(socket.id, data.data.examCode);
@@ -94,7 +99,7 @@ module.exports = (server) => {
             });
             await client.close();
         }).on('disconnect', (data) => {
-
+            io.emit('desktop-disconnect', socketIDUserMap.get(socket.id)); // 참여자 영상 패널에 나타내기 위해 감독에게 welcome 메시지를 보낸다
         });
 
         /* socketio with mobile */
@@ -105,6 +110,7 @@ module.exports = (server) => {
             console.log(data)
             io.emit('request-data', data);
         }).on('eye', (data) => { // 사진 데이터
+            console.log('eye');
             socket.broadcast.emit('eye', data); // TODO?: 시험 두개 동시 시작해서 각각 다른 eye 받는지 확인해야 함.
         }).on('stop-data', () => { // 데이터 전송 중단 요청
             io.emit('stop-data');
