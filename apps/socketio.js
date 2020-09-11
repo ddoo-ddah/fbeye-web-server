@@ -49,7 +49,8 @@ module.exports = (server) => {
             const chatData = {
                 timestamp: getTimestamp(),
                 sender: socketIDUserMap.get(socket.id).name,
-                message: data.message
+                message: data.message,
+                flag: false
             };
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기
@@ -79,7 +80,8 @@ module.exports = (server) => {
             const chatData = {
                 timestamp: getTimestamp(),
                 sender: socketIDUserMap.get(socket.id).name,
-                message: data.message
+                message: data.message,
+                flag: true
             };
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기

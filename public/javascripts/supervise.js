@@ -55,7 +55,7 @@ window.onload = async event => {
         name: '감독'
     });
     socket.on('chat', (data) => { // 채팅 왔을때 채팅로그에 온 채팅 추가하기
-        chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp, false));
+        chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp, data.flag));
         chatlog.scrollTop = chatlog.scrollHeight;
     }).on('desktop-disconnect', (data) => { // 데스크탑 연결 끊겼을때
         const mailAddress = data.email;
@@ -125,7 +125,7 @@ function createSpeechBubble(sender, message, timestamp, flag) {
 
     const t = document.createElement('span');
     t.className = 'text-muted';
-    t.className += flag ? ' float-left' : ' float-right';
+    t.className += flag ? ' float-right' : ' float-left';
     t.innerText = timestamp;
     div.appendChild(t);
 
