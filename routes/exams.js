@@ -99,15 +99,39 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     const question = req.body['question'];
     const score = req.body['score'];
     const answer = req.body['answer'];
+    const correct = req.body['correct']; // 객관식 작업 중
+
+    console.log('type')
+    console.log(type)
+    console.log('question')
+    console.log(question)
+    console.log('score')
+    console.log(score)
+    console.log('answer')
+    console.log(answer)
+    console.log('correct')
+    console.log(correct)
+
     if (req.session.email && id) {
-        examApp.addQuestion(id, {
-            type,
-            question,
-            score,
-            answers: [
-                answer
-            ]
-        });
+        if (type === '주관식') {
+            examApp.addQuestion(id, {
+                type,
+                question,
+                score,
+                answers: [
+                    answer
+                ]
+            });
+        } else if (type === '객관식') {
+            examApp.addQuestion(id, {
+                type,
+                question,
+                score,
+                multipleChoices: [
+                    answer
+                ]
+            });
+        }
         res.redirect(`/exams/questions/${id}`);
     }
 });
@@ -237,8 +261,8 @@ router.get('/supervise/:id', async (req, res, next) => {
                 _id: { $in: exam.users }
             }).toArray();
         } catch (err) {
-            res.send('참여자가 있어야 합니다.');
-            return;
+            req.flash('danger', '참여자가 있어야 합니다.');
+            res.redirect('/exams');
         }
 
         let isExamTimeNow = true; // TODO: 시험 시간이 아니면 들어가지 못하게 하기
