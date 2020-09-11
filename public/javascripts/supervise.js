@@ -55,7 +55,7 @@ window.onload = async event => {
         name: '감독'
     });
     socket.on('chat', (data) => { // 채팅 왔을때 채팅로그에 온 채팅 추가하기
-        chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp));
+        chatlog.appendChild(createSpeechBubble(data.sender, data.message, data.timestamp, false));
         chatlog.scrollTop = chatlog.scrollHeight;
     }).on('desktop-disconnect', (data) => { // 데스크탑 연결 끊겼을때
         const mailAddress = data.email;
@@ -96,7 +96,7 @@ window.onload = async event => {
         eyeImage.src = '/images/eye-default.png';
         screenImage.src = '/images/screen-default.png';
     });
-    
+
     /* 부정 행위 로그 */
     const cheatingLog = document.querySelector('#card-cheatinglog');
     socket.on('cheat', (data) => {
@@ -106,20 +106,26 @@ window.onload = async event => {
     });
 }
 
-function createSpeechBubble(sender, message, timestamp) {
+function createSpeechBubble(sender, message, timestamp, flag) {
     const div = document.createElement('div');
     div.className = 'px-1';
-    div.innerText = `👩🏻 ${sender}`;
-    div.appendChild(document.createElement('br'));
+    if (!flag) {
+        div.innerText = `👩🏻 ${sender}`;
+        div.appendChild(document.createElement('br'));
+    }
 
     const m = document.createElement('div');
     m.className = 'card d-inline-block ml-4 p-1';
+    if (flag) {
+        m.className += ' bg-warning float-right';
+    }
     m.innerText = message;
     div.appendChild(m);
     div.appendChild(document.createElement('br'));
 
     const t = document.createElement('span');
-    t.className = 'text-muted float-right';
+    t.className = 'text-muted';
+    t.className += flag ? ' float-left' : ' float-right';
     t.innerText = timestamp;
     div.appendChild(t);
 
