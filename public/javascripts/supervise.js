@@ -22,7 +22,7 @@ const base64toBlob = (base64Data, contentType) => {
 // socket.io 관련 event
 window.onload = async event => {
     
-    const socket = io();
+    const socket = io({transports: ['websocket'], upgrade: false});
 
     // 참여자 목록 이벤트
     const userlist = document.querySelector('#user-list').children;
