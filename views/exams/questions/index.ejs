@@ -24,10 +24,10 @@
                 <% questions.forEach(e => { %>
                     <% if (e) { %>
                         <tr>
-                            <td><a href="/exams/questions/<%= id %>/edit/<%= questions.indexOf(e) + 1 %>"><%= questions.indexOf(e) + 1 %></td>
-                            <td><a href="/exams/questions/<%= id %>/edit/<%= questions.indexOf(e) + 1 %>"><%= e.question %></td>
-                            <td><a href="/exams/questions/<%= id %>/edit/<%= questions.indexOf(e) + 1 %>"><%= e.type %></td>
-                            <td><a href="/exams/questions/<%= id %>/edit/<%= questions.indexOf(e) + 1 %>"><%= e.score %></td>
+                            <td><%= questions.indexOf(e) + 1 %></td>
+                            <td><%= e.question %></td>
+                            <td><%= e.type %></td>
+                            <td><%= e.score %></td>
                         </tr></a>
                     <% } %>
                 <% }); %>
