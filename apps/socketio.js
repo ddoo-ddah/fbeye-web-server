@@ -105,7 +105,15 @@ module.exports = (server) => {
         });
 
         /* socketio with mobile */
-        socket.on('mobile-welcome', (data) => { // 접속
+        socket.on('mobile-welcome', async (data) => { // 접속
+
+            const client = await db.connect();
+            const userInfo = await client.db().collection('users').findOne({
+                accessCode: data
+            });
+            await client.close();
+            socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode를 매핑한다
+            console.log('mobile-welcome');
 
         }).on('request-data', (data) => { // 데이터 전송 요청
             console.log(`request-data`);

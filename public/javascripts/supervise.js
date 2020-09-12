@@ -100,9 +100,17 @@ window.onload = async event => {
     /* 부정 행위 로그 */
     const cheatingLog = document.querySelector('#card-cheatinglog');
     socket.on('cheat', (data) => {
-        const log = document.createElement('p');
-        log.innerText = `(${data.timestamp}) ${data.userName} : ${data.content}`;
-        cheatingLog.appendChild(log);
+        let log = '';
+        switch (data.content) {
+            case '얼굴 인식 실패': 
+                log = `(${data.timestamp}) ${data.userName} : 얼굴 인식 실패`;
+                break;
+            default:
+                log = `(${data.timestamp}) ${data.userName} : 시선 범위 이탈`;
+                break;
+        }
+        cheatingLog.innerHTML = cheatingLog.innerHTML + '<br>' + log;
+        cheatingLog.scrollTop = cheatingLog.scrollHeight;
     });
 }
 
