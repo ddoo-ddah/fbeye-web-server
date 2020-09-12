@@ -98,7 +98,7 @@ window.onload = async event => {
     });
 
     /* 부정 행위 로그 */
-    const cheatingLog = document.querySelector('#card-cheatinglog');
+    const cheatingLog = document.querySelector('#cheatinglog');
     socket.on('cheat', (data) => {
         let log = '';
         switch (data.content) {

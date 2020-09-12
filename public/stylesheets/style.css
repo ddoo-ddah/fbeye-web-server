@@ -7,6 +7,10 @@ h1, h2, h3, h4, h5, h6, p, label, th, .card-header, .btn {
 }
 
 #card-chatlog {
-  height: 30em;
+  height: 20em;
   background-color: skyblue;
+}
+
+#cheatinglog {
+  height: 20em;
 }
