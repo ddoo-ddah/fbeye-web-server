@@ -15,8 +15,8 @@ document.querySelector('#multi-selection').onclick = () => { // 객관식 선택
     answer.innerHTML =  `
     <div id="multiple-answer">
     <p>보기</p>
-    <label for="answer2">1 (<input type="checkbox" id="correct1" name="correct"><label for="correct1">정답</label>)</label>
-    <textarea class="form-control" id="answer2" name="answer" rows="1" style="resize: none;" required></textarea><br>
+    <label for="answer1">1 (<input type="checkbox" id="correct1" name="correct"><label for="correct1">정답</label>)</label>
+    <textarea class="form-control" id="answer1" name="answer" rows="1" style="resize: none;" required></textarea><br>
     <label for="answer2">2 (<input type="checkbox" id="correct2" name="correct"><label for="correct2">정답</label>)</label>
     <textarea class="form-control" id="answer2" name="answer" rows="1" style="resize: none;" required></textarea><br>
     <label for="answer3">3 (<input type="checkbox" id="correct3" name="correct"><label for="correct3">정답</label>)</label>
