@@ -99,18 +99,6 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     const question = req.body['question'];
     const score = req.body['score'];
     const answer = req.body['answer'];
-    const correct = req.body['correct']; // 객관식 작업 중
-
-    console.log('type')
-    console.log(type)
-    console.log('question')
-    console.log(question)
-    console.log('score')
-    console.log(score)
-    console.log('answer')
-    console.log(answer)
-    console.log('correct')
-    console.log(correct)
 
     if (req.session.email && id) {
         if (type === '주관식') {
@@ -127,57 +115,9 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
                 type,
                 question,
                 score,
-                multipleChoices: [
-                    answer
-                ]
+                multipleChoices: answer
             });
         }
-        res.redirect(`/exams/questions/${id}`);
-    }
-});
-
-router.get('/questions/:id/edit/:num', (req, res, next) => {
-    const id = req.params.id;
-    const num = req.params.num;
-    if (req.session.email) {
-        res.render('exams/questions/edit', {
-            id,
-            num
-        });
-    } else {
-        res.redirect('/');
-    }
-});
-
-router.post('/questions/:id/edit/:num', async (req, res, next) => { // 문제 편집
-    const id = req.params.id;
-    const num = req.params.num;
-    const type = req.body['type'];
-    const question = req.body['question'];
-    const score = req.body['score'];
-    const answer = req.body['answer'];
-    if (req.session.email && id) {
-
-        const client = await db.connect();
-
-        const updatedQuestion = {};
-        updatedQuestion[`questions.${num - 1}`] = {
-            type: type,
-            question: question,
-            score: score,
-            answers: [
-                answer
-            ]
-        };
-
-        const result = await client.db().collection('exams').updateOne(
-            {
-                accessCode: id
-            },
-            {
-                $set: updatedQuestion
-            });
-
         res.redirect(`/exams/questions/${id}`);
     }
 });

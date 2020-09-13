@@ -33,12 +33,13 @@ module.exports = (server) => {
         /* socketio with desktop - chat */
         socket.on('desktop-welcome', async (data) => {
 
+            console.log('desktop-welcome'); // DEBUG
+
             const client = await db.connect();
             const userInfo = await client.db().collection('users').findOne({
                 accessCode: data.data.userCode
             });
             await client.close();
-            console.log('desktop welcome'); // DEBUG
             console.log(userInfo); // DEBUG
             io.emit('welcome', userInfo); // 참여자 영상 패널에 나타내기 위해 감독에게 welcome 메시지를 보낸다
             socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode, examcode를 매핑한다
@@ -46,12 +47,16 @@ module.exports = (server) => {
 
         }).on('desktop-chat', async (data) => { // 채팅
 
+            console.log('desktop-chat'); // DEBUG
+
             const chatData = {
                 timestamp: getTimestamp(),
                 sender: socketIDUserMap.get(socket.id).name,
                 message: data.message,
                 flag: false
             };
+            // socketIDUserMap.get(socket.id).name
+            console.log(socket.id);
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기
             io.emit('desktop-chat', chatData); // 클라이언트들에게 채팅 뿌리기
@@ -73,16 +78,24 @@ module.exports = (server) => {
 
         /* socketio with supervisor */
         socket.on('welcome', (data) => {
+
+            console.log('welcome'); // DEBUG
+
             socketIDUserMap.set(socket.id, {
                 name: data.name
             });
         }).on('chat', async (data) => { // TODO: .on('desktop-chat')과 완전히 동일하지만 리팩토링은 여유될때 (desktop 팀이랑 시간 맞춰야 함)
+
+        console.log('chat'); // DEBUG
+
             const chatData = {
                 timestamp: getTimestamp(),
                 sender: socketIDUserMap.get(socket.id).name,
                 message: data.message,
                 flag: true
             };
+            // socketIDUserMap.get(socket.id).name
+            console.log(socket.id);
             console.log(`(${chatData.timestamp}) ${chatData.sender} : ${chatData.message}`);
             io.emit('chat', chatData); // 웹에 채팅 뿌리기
             io.emit('desktop-chat', chatData); // 클라이언트들에게 채팅 뿌리기
@@ -101,6 +114,9 @@ module.exports = (server) => {
             });
             await client.close();
         }).on('disconnect', (data) => {
+
+            console.log('disconnect'); // DEBUG
+
             io.emit('desktop-disconnect', socketIDUserMap.get(socket.id)); // 참여자 영상 패널에 나타내기 위해 감독에게 welcome 메시지를 보낸다
         });
 
@@ -115,32 +131,52 @@ module.exports = (server) => {
             socketIDUserMap.set(socket.id, userInfo); // socket.id와 usercode를 매핑한다
             console.log('mobile-welcome');
 
+            console.log('mobile-welcome'); // DEBUG
+
         }).on('request-data', (data) => { // 데이터 전송 요청
-            console.log(`request-data`);
+
+            console.log('request-data'); // DEBUG
+
             console.log(data)
             io.emit('request-data', data);
         }).on('eye', (data) => { // 사진 데이터
-            console.log('eye');
+            console.log('eye'); // DEBUG
             socket.broadcast.emit('eye', data); // TODO?: 시험 두개 동시 시작해서 각각 다른 eye 받는지 확인해야 함.
         }).on('stop-data', () => { // 데이터 전송 중단 요청
+            console.log('stop-data'); // DEBUG
             io.emit('stop-data');
         }).on('mobile-disconnect', (data) => { // 접속 해제
+
+            console.log('mobile-disconnect'); // DEBUG
 
         });
 
         /* socketio with desktop - screen */
         socket.on('screen', (data) => { // 스크린 데이터 수신
+
+            console.log('screen'); // DEBUG
+
             socket.broadcast.emit('screen', data); // TODO?: 바로 위 TODO와 동일
         });
 
         /* socketio with desktop - cheatlog */
         socket.on('cheat', (data) => {
+
+            console.log('cheat'); // DEBUG
+
             const result = {
                 timestamp: getTimestamp(),
                 userName: socketIDUserMap.get(socket.id).name,
                 content: data
             };
+            // socketIDUserMap.get(socket.id).name
             socket.broadcast.emit('cheat', result);
         });
+
+        socket.on('error', (data) => {
+            console.log('error');
+
+            console.log(data)
+        })
     });
 }

@@ -21,8 +21,8 @@
                                 <label for="short" class="form-check-label">주관식</label>
                             </li>
                             <li>
-                                <input type="radio" class="form-check-input" id="short" name="type" value="객관식">
-                                <label for="short" class="form-check-label">객관식</label>
+                                <input type="radio" class="form-check-input" id="multi-selection" name="type" value="객관식">
+                                <label for="multi-selection" class="form-check-label">객관식</label>
                             </li>
                         </ul>
                     </div>
@@ -39,9 +39,27 @@
             <label for="question">문제</label>
             <textarea class="form-control" id="question" name="question" required></textarea>
         </div>
-        <div class="form-group">
-            <label for="answer">답</label>
-            <textarea class="form-control" id="answer" name="answer" required></textarea>
+        <div class="form-group" id="answer-format">
+
+            <div id="short-answer" class="">
+                <label for="answer">답</label>
+                <textarea class="form-control" id="answer" name="answer" required></textarea>
+            </div>
+            
+            <div id="multiple-answer" class="invisible">
+                <p>보기</p>
+                <label for="answer2">1 (<input type="checkbox" id="correct1" name="correct"><label for="correct1">정답</label>)</label>
+                <textarea class="form-control" id="answer2" name="answer" rows="1" style="resize: none;" required></textarea><br>
+                <label for="answer2">2 (<input type="checkbox" id="correct2" name="correct"><label for="correct2">정답</label>)</label>
+                <textarea class="form-control" id="answer2" name="answer" rows="1" style="resize: none;" required></textarea><br>
+                <label for="answer3">3 (<input type="checkbox" id="correct3" name="correct"><label for="correct3">정답</label>)</label>
+                <textarea class="form-control" id="answer3" name="answer" rows="1" style="resize: none;"></textarea><br>
+                <label for="answer4">4 (<input type="checkbox" id="correct4" name="correct"><label for="correct4">정답</label>)</label>
+                <textarea class="form-control" id="answer4" name="answer" rows="1" style="resize: none;"></textarea><br>
+                <label for="answer5">5 (<input type="checkbox" id="correct5" name="correct"><label for="correct5">정답</label>)</label>
+                <textarea class="form-control" id="answer5" name="answer" rows="1" style="resize: none;"></textarea>
+            </div>
+            
         </div>
         <p class="text-right">
             <a href="/exams/questions/<%= id %>" class="btn btn-secondary">↩ 취소</a>
@@ -49,5 +67,7 @@
         </p>
     </form>
 </div>
+<script src="/javascripts/newquestion.js"></script>
     </body>
 </html>
+ 
