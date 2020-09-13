@@ -99,7 +99,7 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     const question = req.body['question'];
     const score = req.body['score'];
     const answer = req.body['answer'];
-    const correct = req.body['correct']; // 객관식 작업 중
+    const correct = req.body['correct']; // 객관식 작업 
 
     console.log('type')
     console.log(type)
@@ -109,8 +109,6 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
     console.log(score)
     console.log('answer')
     console.log(answer)
-    console.log('correct')
-    console.log(correct)
 
     if (req.session.email && id) {
         if (type === '주관식') {
@@ -127,9 +125,7 @@ router.post('/questions/new/:id', async (req, res, next) => { // 문제 추가
                 type,
                 question,
                 score,
-                multipleChoices: [
-                    answer
-                ]
+                multipleChoices: answer
             });
         }
         res.redirect(`/exams/questions/${id}`);
